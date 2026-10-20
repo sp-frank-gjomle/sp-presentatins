@@ -28,7 +28,7 @@ class: text-center
 ## Hvem – hva – hvorfor automasjon?
 
 <div class="absolute right-16 bottom-16 opacity-80 flex items-center gap-3">
-  <carbon-automation class="text-5xl sp-icon" />
+  <carbon-automatic class="text-5xl sp-icon" />
   <span class="text-lg">Ansible</span>
 </div>
 
@@ -206,7 +206,7 @@ layout: two-cols
 <div class="flex flex-col gap-4 mt-8">
 
 <div v-click class="sp-card">
-<carbon-automation class="sp-icon text-2xl mr-2" /> <strong>Ansible + AWX</strong>
+<carbon-automatic class="sp-icon text-2xl mr-2" /> <strong>Ansible + AWX</strong>
 <p class="text-sm opacity-80 mt-1">Automatisering av konfigurasjon, patching og orkestrering</p>
 </div>
 
@@ -251,7 +251,7 @@ layout: two-cols
   </div>
   <carbon-arrow-right class="sp-icon pipeline-arrow" />
   <div class="sp-card pipeline-step">
-    <carbon-automation class="sp-icon text-3xl mb-2" />
+    <carbon-automatic class="sp-icon text-3xl mb-2" />
     <strong>AWX</strong>
     <span>Automatisert utrulling</span>
   </div>
@@ -388,7 +388,7 @@ class: text-center
 ## Spørsmål?
 
 <div class="absolute right-16 bottom-16 opacity-80 flex items-center gap-3">
-  <carbon-automation class="text-5xl sp-icon" />
+  <carbon-automatic class="text-5xl sp-icon" />
   <span class="text-lg">Ansible</span>
 </div>
 

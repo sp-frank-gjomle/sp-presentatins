@@ -12,5 +12,8 @@
   "devDependencies": {
     "@iconify-json/carbon": "^1.2.10",
     "@slidev/cli": "^52.6.0"
+  },
+  "dependencies": {
+    "@slidev/theme-default": "^0.25.0"
   }
 }
