@@ -1,0 +1,12 @@
+{
+  "name": "sp-presentatins",
+  "private": true,
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.18.0"
+  }
+}
