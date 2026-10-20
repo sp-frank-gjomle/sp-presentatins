@@ -4,9 +4,13 @@
   "scripts": {
     "dev": "slidev",
     "build": "slidev build",
-    "export": "slidev export"
+    "export": "slidev export",
+    "dev:admapp-automasjon": "slidev presentations/admapp-automasjon/slides.md",
+    "build:admapp-automasjon": "slidev build presentations/admapp-automasjon/slides.md",
+    "export:admapp-automasjon": "slidev export presentations/admapp-automasjon/slides.md"
   },
   "devDependencies": {
-    "@slidev/cli": "^52.18.0"
+    "@iconify-json/carbon": "^1.2.10",
+    "@slidev/cli": "^52.6.0"
   }
 }

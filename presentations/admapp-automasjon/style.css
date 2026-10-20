@@ -1,0 +1,134 @@
+/*
+ * Supplerende tema for Slidev, inspirert av Sykehuspartners Marp-tema.
+ *
+ * Fargepaletten:
+ *   - #023f84  Sykehuspartner-blå
+ *   - #cee7ff  Lys isblå
+ *   - #151b23  Mørk bakgrunn
+ */
+
+:root,
+html.dark {
+  --slidev-theme-primary: #4f9eff;
+}
+
+html.dark body {
+  background:
+    radial-gradient(circle at 12% 10%, rgba(79, 158, 255, 0.16), transparent 42%),
+    radial-gradient(circle at 88% 88%, rgba(2, 63, 132, 0.4), transparent 55%),
+    #0a1b2e;
+}
+
+.slidev-layout {
+  font-family:
+    'Segoe UI',
+    'Avenir Next',
+    'Nunito Sans',
+    system-ui,
+    sans-serif;
+}
+
+.slidev-layout h1 {
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.slidev-layout h2 {
+  font-weight: 600;
+  color: #cee7ff;
+}
+
+.slidev-layout h3 {
+  font-weight: 600;
+  color: #9fd0ff;
+}
+
+.slidev-layout a {
+  color: #7fc1ff;
+}
+
+.slidev-layout strong {
+  color: #ffffff;
+}
+
+.slidev-layout.cover h1,
+.slidev-layout.section h1 {
+  background: linear-gradient(90deg, #ffffff 0%, #cee7ff 60%, #7fc1ff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.slidev-layout.section {
+  position: relative;
+}
+
+.slidev-layout.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(79, 158, 255, 0.12) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.slidev-layout.fact h1,
+.slidev-layout.statement h1 {
+  color: #ffffff;
+}
+
+.slidev-layout.quote blockquote {
+  border-left: 6px solid #4f9eff;
+  color: #cee7ff;
+}
+
+.slidev-layout .col-left,
+.slidev-layout .col-right {
+  padding: 0 1.5rem;
+}
+
+.sp-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(127, 193, 255, 0.25);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.sp-icon {
+  color: #7fc1ff;
+}
+
+.sp-footer-logo {
+  color: #d8eaff;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.pipeline-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.pipeline-step {
+  display: flex;
+  flex: 1;
+  min-height: 9rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.pipeline-step span {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.pipeline-arrow {
+  flex: none;
+  font-size: 1.5rem;
+}
