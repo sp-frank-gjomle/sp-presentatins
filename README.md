@@ -21,6 +21,8 @@ Edit `presentations/admapp-automasjon/slides.md` to update its slides. Add futur
 presentations as separate directories under `presentations/`.
 The supplied deck referenced image files not present in this repository, so the
 cover uses a Carbon icon and the pipeline slide uses a native Slidev diagram.
+Two-column slides use `two-cols-header` with explicit `::left::` and `::right::`
+slots so the title spans both columns and their content stays aligned.
 
 To run another presentation in its own directory, for example
 `presentations/my-talk/slides.md`, use:

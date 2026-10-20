@@ -88,10 +88,12 @@ layout: section
 # Hvem er AdmApp Automasjon?
 
 ---
-layout: two-cols
+layout: two-cols-header
 ---
 
 # Hvem er vi?
+
+::left::
 
 <v-clicks>
 
@@ -103,7 +105,7 @@ layout: two-cols
 
 ::right::
 
-<div class="mt-12 flex flex-col gap-4">
+<div class="flex flex-col gap-4">
 <v-clicks>
 
 <div class="sp-card">
@@ -125,10 +127,12 @@ Vi anbefaler metodikk og verktøy – fagområdene eier sin egen automasjon
 </div>
 
 ---
-layout: two-cols
+layout: two-cols-header
 ---
 
 # Det vi har bygget
+
+::left::
 
 ### Standarder og dokumentasjon
 
@@ -142,8 +146,6 @@ layout: two-cols
 
 ::right::
 
-<div class="mt-12">
-
 ### Samarbeid på tvers
 
 <v-clicks>
@@ -153,8 +155,6 @@ layout: two-cols
 - Kursmiljø med isolerte sandkasser for trygg læring
 
 </v-clicks>
-
-</div>
 
 ---
 layout: section
@@ -198,12 +198,15 @@ Samme resultat, hver gang – uavhengig av hvem som trykker på knappen
 </div>
 
 ---
-layout: two-cols
+layout: two-cols-header
+layoutClass: sp-tools
 ---
 
 # Automasjon hos oss i praksis
 
-<div class="flex flex-col gap-4 mt-8">
+::left::
+
+<div class="sp-card-stack">
 
 <div v-click class="sp-card">
 <carbon-automatic class="sp-icon text-2xl mr-2" /> <strong>Ansible + AWX</strong>
@@ -219,7 +222,7 @@ layout: two-cols
 
 ::right::
 
-<div class="flex flex-col gap-4 mt-8">
+<div class="sp-card-stack">
 
 <div v-click class="sp-card">
 <carbon-software-resource-cluster class="sp-icon text-2xl mr-2" /> <strong>ProGet</strong>
@@ -269,10 +272,12 @@ sikrer at prosessen er lik hver gang
 </p>
 
 ---
-layout: two-cols
+layout: two-cols-header
 ---
 
 # Automasjonsnivå i dag
+
+::left::
 
 ### Noen av tjenestene
 
@@ -288,8 +293,6 @@ layout: two-cols
 
 ::right::
 
-<div class="mt-12">
-
 ### Hva automatiseres
 
 <v-clicks>
@@ -300,8 +303,6 @@ layout: two-cols
   serversertifikater via AWX
 
 </v-clicks>
-
-</div>
 
 ---
 layout: section
@@ -319,10 +320,12 @@ layout: quote
 <p class="mt-6 text-sm opacity-70">— Formålet med satsingen på automasjon</p>
 
 ---
-layout: two-cols
+layout: two-cols-header
 ---
 
 # Gevinster
+
+::left::
 
 ### Operasjonelt
 
@@ -337,8 +340,6 @@ layout: two-cols
 
 ::right::
 
-<div class="mt-12">
-
 ### Kvalitet og kompetanse
 
 <v-clicks>
@@ -350,8 +351,6 @@ layout: two-cols
 - <carbon-idea class="sp-icon" /> Kunnskapsdeling gjennom kode
 
 </v-clicks>
-
-</div>
 
 ---
 layout: fact

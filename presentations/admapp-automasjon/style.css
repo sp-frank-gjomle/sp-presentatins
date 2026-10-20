@@ -12,6 +12,10 @@ html.dark {
   --slidev-theme-primary: #4f9eff;
 }
 
+#slidev-goto-dialog {
+  display: none;
+}
+
 html.dark body {
   background:
     radial-gradient(circle at 12% 10%, rgba(79, 158, 255, 0.16), transparent 42%),
@@ -83,9 +87,22 @@ html.dark body {
   color: #cee7ff;
 }
 
-.slidev-layout .col-left,
-.slidev-layout .col-right {
-  padding: 0 1.5rem;
+.slidev-layout.two-cols-header {
+  column-gap: 3rem;
+  row-gap: 1rem;
+}
+
+.slidev-layout.two-cols-header .col-left,
+.slidev-layout.two-cols-header .col-right {
+  min-width: 0;
+  padding: 0;
+}
+
+.sp-tools .sp-card-stack {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1rem;
+  height: 100%;
 }
 
 .sp-card {
