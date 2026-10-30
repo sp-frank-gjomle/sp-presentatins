@@ -17,9 +17,6 @@ fonts:
   sans: 'Segoe UI'
   mono: 'Fira Code'
   local: 'Segoe UI'
----
-
----
 layout: cover
 class: text-center
 ---

@@ -392,6 +392,26 @@ html .slidev-layout .steps .s > div:last-child { font-size: 30px; }
 html .slidev-layout svg { display: block; }
 html .slidev-layout svg text { font-family: inherit; }
 
+/*
+ * UnoCSS attributify (på i Slidev) tolker SVG-attributter som utility-klasser,
+ * f.eks. font-size="28" -> font-size: 7rem og opacity=".5" -> opacity: 0.005.
+ * Disse reglene har høyere spesifisitet og gjenoppretter verdiene.
+ * Legg til en regel her hvis du bruker en ny font-size i en SVG.
+ */
+svg [font-size="20"] { font-size: 20px; }
+svg [font-size="22"] { font-size: 22px; }
+svg [font-size="23"] { font-size: 23px; }
+svg [font-size="24"] { font-size: 24px; }
+svg [font-size="26"] { font-size: 26px; }
+svg [font-size="27"] { font-size: 27px; }
+svg [font-size="28"] { font-size: 28px; }
+svg [font-size="30"] { font-size: 30px; }
+svg [font-size="32"] { font-size: 32px; }
+svg [font-size="34"] { font-size: 34px; }
+svg [font-size="36"] { font-size: 36px; }
+svg [font-size="40"] { font-size: 40px; }
+svg [opacity=".5"] { opacity: 0.5; }
+
 /* Elementene animeres inn når sliden vises (v-show gjør at animasjonen starter på nytt) */
 html .slidev-layout .reveal { animation: sp-rise 0.6s ease both; }
 html .slidev-layout .reveal:nth-child(2) { animation-delay: 0.08s; }
