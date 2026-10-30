@@ -55,6 +55,28 @@ links to the exports, for example
 They are also attached to each workflow run as the `presentation-exports`
 artifact. To export locally, run `npm i -D playwright-chromium` once first.
 
-`presentations/automation/` uses a 1920x1080 canvas (`canvasWidth`) so the
-original HTML/CSS carries over 1:1. `style.css` holds the theme and
-`slide-bottom.vue` renders the logo, footer and page number.
+## Theme and template
+
+All decks use the shared local theme in `themes/sykehuspartner/` (Sykehuspartner design,
+based on `sykehuspartner-marp-theme.css`). A deck opts in with
+`theme: ../../themes/sykehuspartner` in its headmatter. The theme provides:
+
+- `package.json` holds the deck defaults: 1920x1080 canvas (`canvasWidth`), dark mode,
+  `routerMode: hash`, fonts, `lang: no` and the fade transition
+- `styles/sykehuspartner.css` holds colors and all components (cards, flow, timeline,
+  pipeline, agenda, admonitions, …)
+- `slide-bottom.vue` renders the logo, the footer (deck `title`, plus the slide's `topic`) and the page number
+- `custom-nav-controls.vue` and `animations.ts` add the animation toggle (key `A`)
+- `example.md` is a gallery of every component: `npx slidev themes/sykehuspartner/example.md`
+
+Changes to the theme affect every deck. Put deck-specific CSS in
+`presentations/<deck>/style.css`.
+
+## Creating slides with Copilot
+
+- **`slide-designer` agent** (`.github/agents/slide-designer.agent.md`): pick it in the
+  Copilot Chat agent picker and describe the deck or slide you want. It can scaffold new
+  decks and add or edit slides, and it checks its work with `slidev build` and PNG screenshots.
+- **`sykehuspartner-slides` skill** (`.github/skills/sykehuspartner-slides/`) holds the design rules,
+  the component catalog and the starter deck. It loads automatically for slide work, or invoke it with
+  `/sykehuspartner-slides`.

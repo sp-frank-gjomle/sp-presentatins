@@ -1,5 +1,5 @@
 ---
-theme: default
+theme: ../../themes/sykehuspartner
 title: Automasjon i drift og vedlikehold
 info: |
   ## Automasjon i drift og vedlikehold
@@ -7,15 +7,6 @@ info: |
 
   Konvertert fra HTML-presentasjonen til Slidev. Fargepalett og stil er basert
   på sykehuspartner-marp-theme.css (sykehuspartner-v1, invert).
-htmlAttrs:
-  lang: no
-colorSchema: dark
-routerMode: hash
-canvasWidth: 1920
-aspectRatio: 16/9
-transition: fade
-fonts:
-  provider: none
 drawings:
   persist: false
 layout: cover

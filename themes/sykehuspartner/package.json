@@ -1,0 +1,32 @@
+{
+  "name": "slidev-theme-sykehuspartner",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sykehuspartner Slidev theme (dark, 1920x1080), based on sykehuspartner-marp-theme.css (sykehuspartner-v1, invert)",
+  "keywords": [
+    "slidev-theme",
+    "slidev"
+  ],
+  "engines": {
+    "slidev": ">=52.0.0"
+  },
+  "slidev": {
+    "colorSchema": "dark",
+    "defaults": {
+      "colorSchema": "dark",
+      "routerMode": "hash",
+      "canvasWidth": 1920,
+      "aspectRatio": "16/9",
+      "transition": "fade",
+      "htmlAttrs": {
+        "lang": "no"
+      },
+      "fonts": {
+        "provider": "none",
+        "mono": "Fira Code",
+        "sans": "Avenir Next,Nunito Sans",
+        "local": "Avenir Next"
+      }
+    }
+  }
+}
