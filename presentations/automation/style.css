@@ -443,3 +443,9 @@ html .slidev-layout .draw { stroke-dasharray: 2000; animation: sp-draw 1.4s ease
   html .slidev-layout .reveal,
   html .slidev-layout .draw { animation: none !important; }
 }
+
+/* Animasjoner slått av (tast A / knapp i navigasjonen, se animations.ts) */
+html.sp-no-anim .slidev-layout .reveal,
+html.sp-no-anim .slidev-layout .draw { animation: none !important; }
+html.sp-no-anim { --slidev-transition-duration: 0s; }
+html.sp-no-anim #slideshow > * { transition: none !important; }
