@@ -48,6 +48,20 @@ npm run build:automation
 npm run export:automation
 ```
 
+## Publish to GitHub Pages
+
+`.github/workflows/deploy-pages.yml` builds every `presentations/*/slides.md`
+on each push to `main` and deploys them to GitHub Pages, with a landing page
+listing all decks:
+
+- https://sp-frank-gjomle.github.io/sp-presentatins/
+- https://sp-frank-gjomle.github.io/sp-presentatins/automation/
+- https://sp-frank-gjomle.github.io/sp-presentatins/admapp-automasjon/
+
+Enable it once under **Settings → Pages → Source: GitHub Actions**. Decks use
+`routerMode: hash` so direct slide links (e.g. `/automation/#/5`) work on Pages.
+New decks added under `presentations/` are published automatically.
+
 `presentations/automation/` uses a 1920x1080 canvas (`canvasWidth`) so the
 original HTML/CSS carries over 1:1. `style.css` holds the theme and
 `slide-bottom.vue` renders the logo, footer and page number.
