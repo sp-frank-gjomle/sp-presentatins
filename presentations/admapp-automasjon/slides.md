@@ -11,6 +11,7 @@ info: |
   Kildebildene var ikke tilgjengelige, så illustrasjonene bruker Carbon-ikoner
   og en innebygd pipeline.
 colorSchema: dark
+routerMode: hash
 transition: slide-left
 fonts:
   sans: 'Segoe UI'

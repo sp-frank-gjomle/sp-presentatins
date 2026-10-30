@@ -2,6 +2,7 @@
 .slidev
 dist
 dist-export
+_site
 .DS_Store
 *.local
 components.d.ts

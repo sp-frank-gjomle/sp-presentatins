@@ -17,6 +17,12 @@ Start the AdmApp Automasjon presentation:
 npm run dev:admapp-automasjon
 ```
 
+Start the "Automasjon i drift og vedlikehold" presentation (converted from HTML):
+
+```bash
+npm run dev:automation
+```
+
 Edit `presentations/admapp-automasjon/slides.md` to update its slides. Add future
 presentations as separate directories under `presentations/`.
 The supplied deck referenced image files not present in this repository, so the
@@ -38,4 +44,10 @@ npx slidev export presentations/my-talk/slides.md
 ```bash
 npm run build:admapp-automasjon
 npm run export:admapp-automasjon
+npm run build:automation
+npm run export:automation
 ```
+
+`presentations/automation/` uses a 1920x1080 canvas (`canvasWidth`) so the
+original HTML/CSS carries over 1:1. `style.css` holds the theme and
+`slide-bottom.vue` renders the logo, footer and page number.

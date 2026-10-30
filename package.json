@@ -7,7 +7,10 @@
     "export": "slidev export",
     "dev:admapp-automasjon": "slidev presentations/admapp-automasjon/slides.md",
     "build:admapp-automasjon": "slidev build presentations/admapp-automasjon/slides.md",
-    "export:admapp-automasjon": "slidev export presentations/admapp-automasjon/slides.md"
+    "export:admapp-automasjon": "slidev export presentations/admapp-automasjon/slides.md",
+    "dev:automation": "slidev presentations/automation/slides.md",
+    "build:automation": "slidev build presentations/automation/slides.md",
+    "export:automation": "slidev export presentations/automation/slides.md"
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.2.10",
