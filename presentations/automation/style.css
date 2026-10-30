@@ -166,7 +166,8 @@ html .slidev-layout .card {
 }
 
 html .slidev-layout .card h4 { margin-bottom: 0.25em; }
-html .slidev-layout .card p { font-size: 28px; color: var(--muted); margin: 0; }
+/* Eksplisitt line-height: ellers vinner Slidevs «leading-6» (fast 24px) og linjene overlapper */
+html .slidev-layout .card p { font-size: 28px; line-height: 1.4; color: var(--muted); margin: 0; }
 html .slidev-layout .card.accent { border-top: 6px solid var(--c, var(--sp-light)); }
 
 /* Kortrutenett med lik størrelse på alle kort */
