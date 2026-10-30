@@ -8,7 +8,10 @@ info: |
   Konvertert fra HTML-presentasjonen til Slidev. Fargepalett og stil er basert
   på sykehuspartner-marp-theme.css (sykehuspartner-v1, invert).
 drawings:
+  enabled: true
   persist: false
+  presenterOnly: false
+  syncAll: true
 layout: cover
 ---
 

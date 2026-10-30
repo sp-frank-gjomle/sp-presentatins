@@ -5,7 +5,10 @@ info: |
   ## TITTEL
   KORT BESKRIVELSE
 drawings:
+  enabled: true
   persist: false
+  presenterOnly: false
+  syncAll: true
 layout: cover
 ---
 

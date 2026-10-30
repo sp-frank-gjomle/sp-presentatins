@@ -8,8 +8,8 @@ argument-hint: 'Describe the deck or slide, e.g. "ny presentasjon om backup" or 
 
 Decks live in `presentations/<deck>/slides.md` and use the shared local Slidev theme in
 [themes/sykehuspartner](../../../themes/sykehuspartner/). The theme supplies the
-1920×1080 canvas, colors, logo, footer, page numbers, the animation toggle (key `A`), and
-all CSS components. Every `presentations/*/slides.md` is published to GitHub Pages
+1920×1080 canvas, colors, logo, footer, page numbers, the animation toggle (key `A`), the
+drawing hotkey (key `P`), and all CSS components. Every `presentations/*/slides.md` is published to GitHub Pages
 automatically by `.github/workflows/deploy-pages.yml`.
 
 - Component catalog with copy-paste snippets: [components.md](./references/components.md)
@@ -63,7 +63,8 @@ topic: Kapittelnavn
 1. Ask for anything missing: deck folder name (kebab-case, e.g. `backup-strategi`),
    title, subtitle, audience, approximate number of slides, and the outline or key messages.
 2. Create `presentations/<deck>/slides.md` from [assets/slides.md](./assets/slides.md).
-   Replace every UPPERCASE placeholder. Keep `theme: ../../themes/sykehuspartner`.
+   Replace every UPPERCASE placeholder. Keep `theme: ../../themes/sykehuspartner` and the
+   `drawings:` block (it enables live drawing, and Slidev ignores it in theme defaults).
    Deck-wide settings (canvas, dark mode, `routerMode: hash`, fonts, transition) come from the
    theme's `package.json` and must not be repeated.
 3. Write the slides (Procedure B, step 2) following the outline: cover → agenda →

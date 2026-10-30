@@ -66,11 +66,31 @@ based on `sykehuspartner-marp-theme.css`). A deck opts in with
 - `styles/sykehuspartner.css` holds colors and all components (cards, flow, timeline,
   pipeline, agenda, admonitions, …)
 - `slide-bottom.vue` renders the logo, the footer (deck `title`, plus the slide's `topic`) and the page number
-- `custom-nav-controls.vue` and `animations.ts` add the animation toggle (key `A`)
+- `custom-nav-controls.vue` and `animations.ts` add the animation toggle (key `A`) and the
+  drawing hotkey (key `P`)
 - `example.md` is a gallery of every component: `npx slidev themes/sykehuspartner/example.md`
 
 Changes to the theme affect every deck. Put deck-specific CSS in
 `presentations/<deck>/style.css`.
+
+## Drawing live on slides
+
+Every deck has Slidev's [drawing](https://sli.dev/features/drawing) feature turned on through
+the `drawings:` block in its headmatter. Slidev reads this setting only from the deck, not
+from theme defaults, so each new deck needs the block (the starter deck includes it). It works
+in `npm run dev:<deck>` and on GitHub Pages.
+
+- Press `P` or click the pen icon in the nav bar (bottom left) to show the drawing toolbar.
+  Press `Esc` or `P` to hide it.
+- In drawing mode, `S` selects the pen, `L` a line, `A` an arrow, `R` a rectangle and `E` an
+  ellipse. `1`–`7` pick a color, `C` clears the slide, and `Ctrl+Z` / `Ctrl+Shift+Z` undo and redo.
+  The `A` animation toggle is paused while drawing mode is on.
+- A stylus draws even when drawing mode is off.
+- Drawings sync live between the presenter view (`/#/presenter/1`) and the audience view.
+  On Pages, both windows must be in the same browser. To let the audience follow on their own
+  devices, present from the dev server with `npm run dev:<deck> -- --remote <password>`.
+- Drawings are not saved (`persist: false`), so they are gone after a reload and are not
+  included in the PDF/PPTX exports. `presenterOnly: true` would allow drawing only from the presenter view.
 
 ## Creating slides with Copilot
 

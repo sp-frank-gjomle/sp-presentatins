@@ -5,7 +5,10 @@ info: |
   Komponentgalleri for Sykehuspartner-temaet. Hver slide viser én byggekloss.
   Kjør med `npx slidev themes/sykehuspartner/example.md`.
 drawings:
+  enabled: true
   persist: false
+  presenterOnly: false
+  syncAll: true
 layout: cover
 ---
 
