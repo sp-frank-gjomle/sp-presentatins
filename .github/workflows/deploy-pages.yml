@@ -27,7 +27,13 @@ jobs:
 
       - run: npm ci
 
-      - name: Build presentations
+      # Required by `slidev export`; installed without touching package-lock.json
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright-chromium
+          npx playwright-core install --with-deps chromium
+
+      - name: Build and export presentations
         env:
           REPO_NAME: ${{ github.event.repository.name }}
         run: |
@@ -40,8 +46,16 @@ jobs:
             npx slidev build "$dir/slides.md" \
               --base "/$REPO_NAME/$name/" \
               --out "$GITHUB_WORKSPACE/_site/$name"
+            for format in pdf pptx; do
+              npx slidev export "$dir/slides.md" \
+                --format "$format" \
+                --timeout 120000 \
+                --output "$GITHUB_WORKSPACE/_site/$name/$name.$format"
+              mkdir -p exports
+              cp "_site/$name/$name.$format" exports/
+            done
             title=$(grep -m1 '^title:' "$dir/slides.md" | sed 's/^title:[[:space:]]*//')
-            links="$links<li><a href=\"./$name/\">${title:-$name}</a></li>"
+            links="$links<li><a href=\"./$name/\">${title:-$name}</a> (<a href=\"./$name/$name.pdf\">PDF</a>, <a href=\"./$name/$name.pptx\">PPTX</a>)</li>"
           done
           cat > _site/index.html <<EOF
           <!doctype html>
@@ -54,6 +68,11 @@ jobs:
           </body>
           </html>
           EOF
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: presentation-exports
+          path: exports/
 
       - uses: actions/upload-pages-artifact@v5
         with:

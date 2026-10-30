@@ -62,6 +62,13 @@ Enable it once under **Settings → Pages → Source: GitHub Actions**. Decks us
 `routerMode: hash` so direct slide links (e.g. `/automation/#/5`) work on Pages.
 New decks added under `presentations/` are published automatically.
 
+The workflow also exports each deck to PDF and PPTX with `slidev export`
+(using Playwright Chromium, which CI installs with `--no-save`). The landing page
+links to the exports, for example
+`https://sp-frank-gjomle.github.io/sp-presentatins/automation/automation.pdf`.
+They are also attached to each workflow run as the `presentation-exports`
+artifact. To export locally, run `npm i -D playwright-chromium` once first.
+
 `presentations/automation/` uses a 1920x1080 canvas (`canvasWidth`) so the
 original HTML/CSS carries over 1:1. `style.css` holds the theme and
 `slide-bottom.vue` renders the logo, footer and page number.
