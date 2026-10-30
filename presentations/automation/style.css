@@ -73,7 +73,7 @@ html .slidev-layout h1 {
 html .slidev-layout h2 { font-size: 70px; color: var(--sp-pale); font-weight: 600; }
 html .slidev-layout h3 { font-size: 50px; color: var(--sp-pale); font-weight: 600; }
 html .slidev-layout h4 { font-size: 40px; color: var(--sp-light); font-weight: 600; }
-html .slidev-layout p { margin: 0 0 0.6em; opacity: 1; }
+html .slidev-layout p { margin: 0 0 0.6em; opacity: 1; line-height: 1.45; }
 html .slidev-layout ul,
 html .slidev-layout ol { margin: 0; padding-left: 1.2em; }
 html .slidev-layout li { margin: 0.25em 0; }
