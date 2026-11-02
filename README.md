@@ -37,8 +37,8 @@ npm run export:automation
 
 ## Publish to GitHub Pages
 
-`.github/workflows/deploy-pages.yml` builds every `presentations/*/slides.md`
-on each push to `main` and deploys them to GitHub Pages, with a landing page
+`.github/workflows/deploy-pages.yml` builds every `slides/*/slides.md`
+(using the dependencies in `slides/package.json`) on each push to `main` and deploys them to GitHub Pages, with a landing page
 listing all decks:
 
 - https://sp-frank-gjomle.github.io/sp-presentatins/
@@ -46,10 +46,10 @@ listing all decks:
 
 Enable it once under **Settings → Pages → Source: GitHub Actions**. Decks use
 `routerMode: hash` so direct slide links (e.g. `/automation/#/5`) work on Pages.
-New decks added under `presentations/` are published automatically.
+New decks added under `slides/` are published automatically.
 
 The workflow also exports each deck to PDF and PPTX with `slidev export`
-(using Playwright Chromium, which CI installs with `--no-save`). The landing page
+(using Playwright Chromium from `slides/` devDependencies). The landing page
 links to the exports, for example
 `https://sp-frank-gjomle.github.io/sp-presentatins/automation/automation.pdf`.
 They are also attached to each workflow run as the `presentation-exports`
