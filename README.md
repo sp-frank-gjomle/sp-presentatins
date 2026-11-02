@@ -5,15 +5,13 @@ presentation lives in its own directory under `slides/`.
 
 ## Getting started
 
-Install dependencies (the root install provides `@slidev/theme-default` for the
-local theme in `themes/sykehuspartner`):
+Install dependencies:
 
 ```bash
-npm install
 npm install --prefix slides
 ```
 
-Start the "Automasjon i drift og vedlikehold" presentation (converted from HTML):
+Start the "Automasjon i drift og vedlikehold" presentation (runs Slidev from `slides/`):
 
 ```bash
 npm run dev:automation
@@ -66,22 +64,24 @@ merging, open its workflow run and download the `presentation-exports` artifact
 
 ## Theme and template
 
-All decks use the shared local theme in `themes/sykehuspartner/` (Sykehuspartner design,
-based on `sykehuspartner-marp-theme.css`), except decks that use the published
-`@sp-days-framework/slidev-theme-sykehuspartner` package instead. A deck opts in with
-`theme: ../../themes/sykehuspartner` in its headmatter. The theme provides:
+All decks use the published `@sp-days-framework/slidev-theme-sykehuspartner` package
+(`theme: "@sp-days-framework/slidev-theme-sykehuspartner"` in the headmatter, installed in
+`slides/package.json`). Its documentation ships with the package in
+`slides/node_modules/@sp-days-framework/slidev-theme-sykehuspartner/docs/`.
 
-- `package.json` holds the deck defaults: 1920x1080 canvas (`canvasWidth`), dark mode,
-  `routerMode: hash`, fonts, `lang: no` and the fade transition
-- `styles/sykehuspartner.css` holds colors and all components (cards, flow, timeline,
-  pipeline, agenda, admonitions, …)
-- `slide-bottom.vue` renders the logo, the footer (deck `title`, plus the slide's `topic`) and the page number
+The theme provides layouts, logo, colors (`--sp-primary`, `--sp-success`, `--sp-warning`,
+`--sp-danger`, `--sp-info`) and typography on a 980x552 canvas. Deck-specific parts live in the
+deck folder, for example in `slides/automation/`:
+
+- `style.css` holds the deck's components (cards, flow, timeline, pipeline, agenda,
+  admonitions, …), sized for the 980x552 canvas and colored with the theme variables
+- `global-top.vue` renders the page number and `slide-bottom.vue` the footer (deck `title`,
+  plus the slide's `topic`)
 - `custom-nav-controls.vue` and `animations.ts` add the animation toggle (key `A`) and the
   drawing hotkey (key `P`)
-- `example.md` is a gallery of every component: `npx slidev themes/sykehuspartner/example.md`
 
-Changes to the theme affect every deck. Put deck-specific CSS in
-`slides/<deck>/style.css`.
+`themes/sykehuspartner/` is the earlier local theme (1920x1080, based on
+`sykehuspartner-marp-theme.css`). No deck uses it anymore.
 
 ## Drawing live on slides
 

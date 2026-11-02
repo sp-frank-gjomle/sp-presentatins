@@ -22,10 +22,12 @@ if (hasWindow) {
       animationsEnabled.value = e.newValue !== 'off'
   })
 
-  // Tast A. Ignoreres i tekstfelt og med modifikatortaster.
+  // Tast A. Ignoreres i tekstfelt, med modifikatortaster og i tegnemodus (der velger A pil-verktøyet).
   window.addEventListener('keydown', (e) => {
     const target = e.target as HTMLElement | null
     if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || e.key.toLowerCase() !== 'a')
+      return
+    if (localStorage.getItem('slidev-drawing-enabled') === 'true')
       return
     if (target?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target?.tagName ?? ''))
       return

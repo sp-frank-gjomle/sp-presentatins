@@ -1,24 +1,13 @@
 /*
- * Tema for «Automasjon i drift og vedlikehold».
- * Basert på sykehuspartner-marp-theme.css (sykehuspartner-v1, invert).
- * Lerretet er satt til 1920x1080 (canvasWidth i slides.md), slik at
- * px-verdiene her tilsvarer den opprinnelige HTML-presentasjonen.
- * «html»-prefikset gir høyere spesifisitet enn Slidev-temaet.
+ * Deck-spesifikke komponenter for «Automasjon i drift og vedlikehold».
+ * Layout, typografi, logo og farger kommer fra
+ * @sp-days-framework/slidev-theme-sykehuspartner (980x552-lerret).
+ * Bruk temavariablene (--sp-primary, --sp-success, --sp-warning, --sp-danger, --sp-info).
  */
 
 :root {
+  /* Sykehuspartner-blå og merkefarger for verktøyene i diagrammene */
   --sp-blue: #023f84;
-  --sp-light: #6cace4;
-  --sp-pale: #cee7ff;
-  --bg: #0d1117;
-  --bg-2: #161b22;
-  --bg-3: #1f2630;
-  --fg: #e6edf3;
-  --muted: #9da7b3;
-  --border: #30363d;
-  --ok: #4caf50;
-  --warn: #e9d416;
-  --danger: #f44336;
   --gitlab: #fc6d26;
   --git: #f05032;
   --proget: #3fa7d6;
@@ -27,371 +16,261 @@
   --pwsh: #5391fe;
 }
 
-html.dark,
-html.dark body {
-  background: #000;
+.slidev-layout {
+  --surface: color-mix(in srgb, var(--sp-primary) 8%, transparent);
+  --border: color-mix(in srgb, var(--sp-primary) 30%, transparent);
+  --good: color-mix(in srgb, var(--sp-success) 45%, black);
+  --bad: color-mix(in srgb, var(--sp-danger) 65%, black);
 }
 
-#slidev-goto-dialog {
-  display: none;
-}
+.slidev-layout h2,
+.slidev-layout h3,
+.slidev-layout h4 { margin: 0 0 0.4em; line-height: 1.15; }
+.slidev-layout h4 { font-size: 1.25rem; font-weight: 600; color: var(--sp-primary); }
+.slidev-layout .muted { opacity: 0.7; }
+.slidev-layout .small { font-size: 0.875rem; }
+.slidev-layout .xs { font-size: 0.75rem; }
+.slidev-layout .ok-text { color: var(--sp-success); }
+.slidev-layout .bad-text { color: var(--sp-danger); }
 
-/* Grunnlayout */
-html .slidev-layout {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 70px 100px 90px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
-  font-size: 35px;
-  line-height: 1.45;
-  color: var(--fg);
-  background: var(--bg);
-  overflow: hidden;
-}
-
-html .slidev-layout h1,
-html .slidev-layout h2,
-html .slidev-layout h3,
-html .slidev-layout h4 {
-  margin: 0 0 0.4em;
-  line-height: 1.15;
-  opacity: 1;
-}
-
-html .slidev-layout h1 {
-  font-size: 90px;
-  font-weight: bold;
-  color: #fff;
-  padding-bottom: 0.15em;
-  border-bottom: 2px solid var(--border);
-  letter-spacing: normal;
-}
-
-html .slidev-layout h2 { font-size: 70px; color: var(--sp-pale); font-weight: 600; }
-html .slidev-layout h3 { font-size: 50px; color: var(--sp-pale); font-weight: 600; }
-html .slidev-layout h4 { font-size: 40px; color: var(--sp-light); font-weight: 600; }
-html .slidev-layout p { margin: 0 0 0.6em; opacity: 1; line-height: 1.45; }
-html .slidev-layout ul,
-html .slidev-layout ol { margin: 0; padding-left: 1.2em; }
-html .slidev-layout li { margin: 0.25em 0; }
-html .slidev-layout strong { color: #fff; font-weight: bold; }
-html .slidev-layout a { color: var(--sp-light); border-bottom: 0; }
-html .slidev-layout .muted { color: var(--muted); }
-html .slidev-layout .small { font-size: 28px; }
-html .slidev-layout .xs { font-size: 24px; }
-
-/* Logo, sidetall og footer (slide-bottom.vue) */
-.sp-logo-small {
-  position: absolute;
-  z-index: 1;
-  top: 20px;
-  right: 20px;
-  width: 65px;
-  height: 65px;
-}
-
-.sp-page {
-  position: absolute;
-  z-index: 1;
-  right: 40px;
-  bottom: 26px;
-  font-size: 27px;
-  color: var(--muted);
-}
-
-.sp-footer {
-  position: absolute;
-  z-index: 1;
-  left: 100px;
-  bottom: 26px;
-  font-size: 27px;
-  color: var(--muted);
-}
-
-.sp-logo-full {
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  bottom: 80px;
-  width: 500px;
-  transform: translateX(-50%);
-}
-
-/* Tittel-slide og avslutning (layout: cover) */
-html .slidev-layout.cover {
-  justify-content: center;
-  text-align: left;
-  background:
-    radial-gradient(ellipse at 80% 20%, rgba(108, 172, 228, 0.18), transparent 55%),
-    radial-gradient(ellipse at 10% 90%, rgba(2, 63, 132, 0.45), transparent 60%),
-    var(--bg);
-}
-
-html .slidev-layout.cover h1 {
-  display: inline-block;
-  font-size: 110px;
-  line-height: 1.15;
-  margin-bottom: 0;
-}
-
-html .slidev-layout.cover h2 { margin-top: 24px; font-size: 56px; }
-html .slidev-layout.cover .center { text-align: center; }
-
-/* Kolonner fra temaet */
-html .slidev-layout .columns-2-top,
-html .slidev-layout .columns-2-center { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; }
-html .slidev-layout .columns-3-top { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-html .slidev-layout .columns-4-top { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-html .slidev-layout [class$='-top'] { align-items: start; }
-html .slidev-layout [class$='-center'] { align-items: center; }
-
-html .slidev-layout .content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 0;
-}
+.slidev-layout .columns-2-top { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; align-items: start; }
+.slidev-layout .columns-3-top { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: start; }
+.slidev-layout .columns-4-top { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; align-items: start; }
 
 /* Kort */
-html .slidev-layout .card {
+.slidev-layout .card {
   position: relative;
-  background: var(--bg-2);
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 30px 34px;
+  border-radius: 9px;
+  padding: 15px 17px;
 }
 
-html .slidev-layout .card h4 { margin-bottom: 0.25em; }
-/* Eksplisitt line-height: ellers vinner Slidevs «leading-6» (fast 24px) og linjene overlapper */
-html .slidev-layout .card p { font-size: 28px; line-height: 1.4; color: var(--muted); margin: 0; }
-html .slidev-layout .card.accent { border-top: 6px solid var(--c, var(--sp-light)); }
+.slidev-layout .card h4 { margin-bottom: 0.25em; }
+/* Eksplisitt line-height: ellers vinner Slidevs «leading-6» (fast 24px) */
+.slidev-layout .card p { font-size: 0.875rem; line-height: 1.4; opacity: 0.8; margin: 0; }
+.slidev-layout .card.accent { border-top: 3px solid var(--c, var(--sp-primary)); }
 
-/* Kortrutenett med lik størrelse på alle kort */
-html .slidev-layout .card-grid {
+/* Kortrutenett med lik størrelse på alle kort (--cols, standard 3) */
+.slidev-layout .card-grid {
   display: grid;
-  grid-template-columns: repeat(var(--cols, 3), 556px);
-  grid-auto-rows: 280px;
-  gap: 26px;
-  justify-content: center;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  grid-auto-rows: 1fr;
+  gap: 13px;
   flex-shrink: 0;
 }
 
-html .slidev-layout .card-grid .card { display: flex; flex-direction: column; padding: 26px 32px; }
-html .slidev-layout .card-grid .badge { width: 68px; height: 68px; font-size: 28px; border-radius: 16px; margin-bottom: 14px; flex: none; }
+.slidev-layout .card-grid .card { display: flex; flex-direction: column; padding: 13px 16px; }
+.slidev-layout .card-grid .badge { width: 34px; height: 34px; font-size: 14px; border-radius: 8px; margin-bottom: 7px; flex: none; }
 
-html .slidev-layout .badge {
+.slidev-layout .badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 84px;
-  height: 84px;
-  border-radius: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   background: var(--c, var(--sp-blue));
   color: #fff;
   font-weight: 800;
-  font-size: 34px;
-  margin-bottom: 18px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  font-size: 17px;
+  margin-bottom: 9px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-/* Admonitions (invert-varianter fra temaet) */
-html .slidev-layout .admonition {
+/* Admonitions */
+.slidev-layout .admonition {
   position: relative;
-  border-left: 60px solid;
-  border-radius: 4px;
+  border-left: 30px solid;
+  border-radius: 2px;
   padding: 0.5em 0.7em 0.6em;
-  font-size: 30px;
+  font-size: 0.95rem;
 }
 
-html .slidev-layout .admonition::before {
+.slidev-layout .admonition::before {
   position: absolute;
-  left: -46px;
+  left: -23px;
   top: 50%;
   transform: translateY(-50%);
   font-weight: 800;
-  font-size: 34px;
+  font-size: 17px;
   color: #fff;
 }
 
-html .slidev-layout .admonition.tip { color: #7bf77f; border-color: #4caf4f94; background: #1a3d1a2f; }
-html .slidev-layout .admonition.tip::before { content: '✓'; }
-html .slidev-layout .admonition.info { color: #7fd0ff; border-color: #2195f398; background: #0a35572f; }
-html .slidev-layout .admonition.info::before { content: 'i'; left: -38px; font-family: Georgia, serif; }
-html .slidev-layout .admonition.warning { color: #ffe97a; border-color: #ffeb3b85; background: #7a5a002f; }
-html .slidev-layout .admonition.warning::before { content: '!'; left: -36px; }
+.slidev-layout .admonition.tip { color: var(--sp-success); border-color: color-mix(in srgb, var(--sp-success) 55%, transparent); background: color-mix(in srgb, var(--sp-success) 10%, transparent); }
+.slidev-layout .admonition.tip::before { content: '✓'; }
+.slidev-layout .admonition.info { color: var(--sp-info); border-color: color-mix(in srgb, var(--sp-info) 55%, transparent); background: color-mix(in srgb, var(--sp-info) 10%, transparent); }
+.slidev-layout .admonition.info::before { content: 'i'; left: -19px; font-family: Georgia, serif; }
+.slidev-layout .admonition.warning { color: var(--sp-warning); border-color: color-mix(in srgb, var(--sp-warning) 55%, transparent); background: color-mix(in srgb, var(--sp-warning) 10%, transparent); }
+.slidev-layout .admonition.warning::before { content: '!'; left: -18px; }
 
 /* Agenda */
-html .slidev-layout .agenda { display: flex; flex-direction: column; gap: 22px; max-width: 1000px; }
-html .slidev-layout .agenda .item { display: flex; align-items: center; gap: 30px; padding: 6px 0; font-size: 44px; }
-html .slidev-layout .agenda .num {
+.slidev-layout .agenda { display: flex; flex-direction: column; gap: 11px; }
+.slidev-layout .agenda .item { display: flex; align-items: center; gap: 15px; padding: 3px 0; font-size: 1.375rem; }
+.slidev-layout .agenda .num {
   flex: none;
-  width: 74px;
-  height: 74px;
+  width: 37px;
+  height: 37px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--sp-light), var(--sp-blue));
+  background: linear-gradient(135deg, var(--sp-primary), var(--sp-blue));
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 34px;
+  font-size: 17px;
   color: #fff;
 }
 
 /* Flytdiagram */
-html .slidev-layout .flow { display: flex; align-items: stretch; gap: 0; }
-html .slidev-layout .flow .node {
+.slidev-layout .flow { display: flex; align-items: stretch; gap: 0; }
+.slidev-layout .flow .node {
   flex: 1;
-  background: var(--bg-2);
-  border: 2px solid var(--c, var(--border));
-  border-radius: 18px;
-  padding: 26px 18px;
+  background: var(--surface);
+  border: 1px solid var(--c, var(--border));
+  border-radius: 9px;
+  padding: 13px 9px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-html .slidev-layout .flow .node .badge { margin-bottom: 14px; }
-html .slidev-layout .flow .node b { font-size: 32px; color: #fff; }
-html .slidev-layout .flow .node span { font-size: 24px; color: var(--muted); line-height: 1.3; margin-top: 8px; }
-html .slidev-layout .flow .arrow {
+.slidev-layout .flow .node .badge { margin-bottom: 7px; }
+.slidev-layout .flow .node b { font-size: 1rem; }
+.slidev-layout .flow .node span { font-size: 0.75rem; opacity: 0.75; line-height: 1.3; margin-top: 4px; }
+.slidev-layout .flow .arrow {
   flex: none;
-  width: 60px;
+  width: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--sp-light);
-  font-size: 50px;
+  color: var(--sp-primary);
+  font-size: 25px;
   font-weight: 800;
 }
 
-/* Pipeline */
-html .slidev-layout .pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; position: relative; }
-html .slidev-layout .stage { padding: 0 18px; position: relative; }
-html .slidev-layout .stage .head {
-  font-size: 30px;
+/* Pipeline (--cols, standard 5) */
+.slidev-layout .pipeline { display: grid; grid-template-columns: repeat(var(--cols, 5), 1fr); gap: 0; position: relative; }
+.slidev-layout .stage { padding: 0 9px; position: relative; }
+.slidev-layout .stage .head {
+  font-size: 0.95rem;
   font-weight: 700;
-  color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: 14px 0;
+  padding: 7px 0;
   text-align: center;
-  border-bottom: 4px solid var(--c, var(--sp-light));
-  margin-bottom: 22px;
+  border-bottom: 2px solid var(--c, var(--sp-primary));
+  margin-bottom: 11px;
 }
 
-html .slidev-layout .job {
+.slidev-layout .job {
   display: flex;
   align-items: center;
-  gap: 14px;
-  background: var(--bg-2);
+  gap: 7px;
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 40px;
-  padding: 12px 22px;
-  font-size: 26px;
-  margin-bottom: 16px;
+  border-radius: 20px;
+  padding: 6px 11px;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
   white-space: nowrap;
 }
 
-html .slidev-layout .job .dot {
+.slidev-layout .job .dot {
   flex: none;
-  width: 34px;
-  height: 34px;
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
-  background: var(--ok);
+  background: var(--sp-success);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  color: #fff;
+  font-size: 11px;
+  color: var(--sp-background);
   font-weight: 800;
 }
 
-html .slidev-layout .job.manual .dot { background: transparent; border: 3px solid var(--sp-light); color: var(--sp-light); }
+.slidev-layout .job.manual .dot { background: transparent; border: 1.5px solid var(--sp-primary); color: var(--sp-primary); }
 
-/* Tidslinje */
-html .slidev-layout .timeline { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; padding-top: 10px; }
-html .slidev-layout .timeline::before {
+/* Tidslinje (--cols, standard 6) */
+.slidev-layout .timeline { position: relative; display: grid; grid-template-columns: repeat(var(--cols, 6), 1fr); gap: 9px; padding-top: 5px; }
+.slidev-layout .timeline::before {
   content: '';
   position: absolute;
   left: 6%;
   right: 6%;
-  top: 62px;
-  height: 6px;
-  background: linear-gradient(90deg, var(--sp-blue), var(--sp-light), var(--ok));
-  border-radius: 3px;
+  top: 31px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sp-blue), var(--sp-primary), var(--sp-success));
+  border-radius: 2px;
 }
 
-html .slidev-layout .timeline .step { text-align: center; position: relative; }
-html .slidev-layout .timeline .circle {
-  width: 104px;
-  height: 104px;
-  margin: 0 auto 22px;
+.slidev-layout .timeline .step { text-align: center; position: relative; }
+.slidev-layout .timeline .circle {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 11px;
   border-radius: 50%;
-  background: var(--bg-3);
-  border: 5px solid var(--c, var(--sp-light));
+  background: var(--sp-background);
+  border: 3px solid var(--c, var(--sp-primary));
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 44px;
+  font-size: 22px;
   position: relative;
   z-index: 1;
 }
 
-html .slidev-layout .timeline .step b { display: block; font-size: 30px; color: #fff; }
-html .slidev-layout .timeline .step span { display: block; font-size: 23px; color: var(--muted); line-height: 1.3; margin-top: 6px; }
+.slidev-layout .timeline .step b { display: block; font-size: 0.95rem; }
+.slidev-layout .timeline .step span { display: block; font-size: 0.72rem; opacity: 0.75; line-height: 1.3; margin-top: 3px; }
 
 /* Stolpediagram */
-html .slidev-layout .bars { display: flex; flex-direction: column; gap: 26px; }
-html .slidev-layout .bar-row { display: grid; grid-template-columns: 170px 1fr; align-items: center; gap: 20px; font-size: 28px; }
-html .slidev-layout .bar { display: flex; height: 64px; border-radius: 10px; overflow: hidden; }
-html .slidev-layout .bar div { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: 600; }
-html .slidev-layout .legend { display: flex; gap: 30px; font-size: 24px; color: var(--muted); margin-top: 10px; }
-html .slidev-layout .legend i { display: inline-block; width: 22px; height: 22px; border-radius: 4px; margin-right: 8px; vertical-align: -3px; }
+.slidev-layout .bars { display: flex; flex-direction: column; gap: 13px; }
+.slidev-layout .bar-row { display: grid; grid-template-columns: 85px 1fr; align-items: center; gap: 10px; font-size: 0.875rem; }
+.slidev-layout .bar { display: flex; height: 32px; border-radius: 5px; overflow: hidden; }
+.slidev-layout .bar div { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.75rem; font-weight: 600; }
+.slidev-layout .legend { display: flex; gap: 15px; font-size: 0.75rem; opacity: 0.75; margin-top: 5px; }
+.slidev-layout .legend i { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
 
 /* Servere (idempotens) */
-html .slidev-layout .servers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-html .slidev-layout .srv {
-  border-radius: 12px;
-  padding: 16px 10px;
+.slidev-layout .servers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+.slidev-layout .srv {
+  border-radius: 6px;
+  padding: 8px 5px;
   text-align: center;
-  font-size: 24px;
+  font-size: 0.75rem;
   line-height: 1.45;
-  background: var(--bg-2);
-  border: 2px solid var(--c, var(--ok));
+  background: var(--surface);
+  border: 1px solid var(--c, var(--sp-success));
 }
 
-html .slidev-layout .srv .ico { font-size: 40px; display: block; }
-html .slidev-layout .srv.bad { --c: var(--danger); }
-html .slidev-layout .srv.bad .state { color: #ff7a7a; }
-html .slidev-layout .srv .state { color: #7bf77f; font-weight: 700; }
+.slidev-layout .srv .ico { font-size: 20px; display: block; }
+.slidev-layout .srv.bad { --c: var(--sp-danger); }
+.slidev-layout .srv .state { color: var(--sp-success); font-weight: 700; }
+.slidev-layout .srv.bad .state { color: var(--sp-danger); }
 
 /* Steg (onboarding) */
-html .slidev-layout .steps { display: flex; flex-direction: column; gap: 20px; }
-html .slidev-layout .steps .s { display: grid; grid-template-columns: 80px 1fr; gap: 22px; align-items: center; }
-html .slidev-layout .steps .n {
-  width: 72px;
-  height: 72px;
-  border-radius: 16px;
+.slidev-layout .steps { display: flex; flex-direction: column; gap: 10px; }
+.slidev-layout .steps .s { display: grid; grid-template-columns: 40px 1fr; gap: 11px; align-items: center; }
+.slidev-layout .steps .n {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   background: var(--sp-blue);
-  border: 2px solid var(--sp-light);
+  border: 1px solid var(--sp-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 34px;
+  font-size: 17px;
   font-weight: 800;
   color: #fff;
 }
 
-html .slidev-layout .steps .s > div:last-child { font-size: 30px; }
+.slidev-layout .steps .s > div:last-child { font-size: 0.95rem; }
 
-/* Diagrammer (SVG) */
-html .slidev-layout svg { display: block; }
-html .slidev-layout svg text { font-family: inherit; }
+/* Diagrammer (SVG). Skalerer med viewBox, så tallene inni er i SVG-enheter. */
+.slidev-layout svg.diagram { display: block; }
+.slidev-layout svg.diagram text { font-family: inherit; }
 
 /*
  * UnoCSS attributify (på i Slidev) tolker SVG-attributter som utility-klasser,
@@ -413,25 +292,28 @@ svg [font-size="36"] { font-size: 36px; }
 svg [font-size="40"] { font-size: 40px; }
 svg [opacity=".5"] { opacity: 0.5; }
 
-/* Elementene animeres inn når sliden vises (v-show gjør at animasjonen starter på nytt) */
-html .slidev-layout .reveal { animation: sp-rise 0.6s ease both; }
-html .slidev-layout .reveal:nth-child(2) { animation-delay: 0.08s; }
-html .slidev-layout .reveal:nth-child(3) { animation-delay: 0.16s; }
-html .slidev-layout .reveal:nth-child(4) { animation-delay: 0.24s; }
-html .slidev-layout .reveal:nth-child(5) { animation-delay: 0.32s; }
-html .slidev-layout .reveal:nth-child(6) { animation-delay: 0.4s; }
-html .slidev-layout .reveal:nth-child(7) { animation-delay: 0.48s; }
-html .slidev-layout .reveal:nth-child(8) { animation-delay: 0.56s; }
-html .slidev-layout .reveal:nth-child(9) { animation-delay: 0.64s; }
-html .slidev-layout .reveal:nth-child(10) { animation-delay: 0.72s; }
-html .slidev-layout .reveal:nth-child(11) { animation-delay: 0.8s; }
+/*
+ * Elementene tones inn når sliden vises (v-show gjør at animasjonen starter på nytt).
+ * Bare opacity, ingen bevegelse, så det ikke hakker ved skjermdeling i Teams.
+ */
+html .slidev-layout .reveal { animation: sp-fade 0.4s ease both; }
+html .slidev-layout .reveal:nth-child(2) { animation-delay: 0.06s; }
+html .slidev-layout .reveal:nth-child(3) { animation-delay: 0.12s; }
+html .slidev-layout .reveal:nth-child(4) { animation-delay: 0.18s; }
+html .slidev-layout .reveal:nth-child(5) { animation-delay: 0.24s; }
+html .slidev-layout .reveal:nth-child(6) { animation-delay: 0.3s; }
+html .slidev-layout .reveal:nth-child(7) { animation-delay: 0.36s; }
+html .slidev-layout .reveal:nth-child(8) { animation-delay: 0.42s; }
+html .slidev-layout .reveal:nth-child(9) { animation-delay: 0.48s; }
+html .slidev-layout .reveal:nth-child(10) { animation-delay: 0.54s; }
+html .slidev-layout .reveal:nth-child(11) { animation-delay: 0.6s; }
 
-@keyframes sp-rise {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: none; }
+@keyframes sp-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-html .slidev-layout .draw { stroke-dasharray: 2000; animation: sp-draw 1.4s ease 0.2s both; }
+html .slidev-layout .draw { stroke-dasharray: 2000; animation: sp-draw 0.8s ease 0.1s both; }
 
 @keyframes sp-draw {
   from { stroke-dashoffset: 2000; }
