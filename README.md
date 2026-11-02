@@ -1,14 +1,16 @@
 # sp-presentatins
 
 Repo for my presentations, built with [Slidev](https://sli.dev/). Each
-presentation lives in its own directory under `presentations/`.
+presentation lives in its own directory under `slides/`.
 
 ## Getting started
 
-Install dependencies:
+Install dependencies (the root install provides `@slidev/theme-default` for the
+local theme in `themes/sykehuspartner`):
 
 ```bash
 npm install
+npm install --prefix slides
 ```
 
 Start the "Automasjon i drift og vedlikehold" presentation (converted from HTML):
@@ -17,15 +19,16 @@ Start the "Automasjon i drift og vedlikehold" presentation (converted from HTML)
 npm run dev:automation
 ```
 
-Add future presentations as separate directories under `presentations/`.
+Add future presentations as separate directories under `slides/`.
 
 To run another presentation in its own directory, for example
-`presentations/my-talk/slides.md`, use:
+`slides/my-talk/slides.md`, use:
 
 ```bash
-npx slidev presentations/my-talk/slides.md
-npx slidev build presentations/my-talk/slides.md
-npx slidev export presentations/my-talk/slides.md
+cd slides
+npx slidev my-talk/slides.md
+npx slidev build my-talk/slides.md
+npx slidev export my-talk/slides.md
 ```
 
 ## Build and export
@@ -53,7 +56,8 @@ The workflow also exports each deck to PDF and PPTX with `slidev export`
 links to the exports, for example
 `https://sp-frank-gjomle.github.io/sp-presentatins/automation/automation.pdf`.
 They are also attached to each workflow run as the `presentation-exports`
-artifact. To export locally, run `npm i -D playwright-chromium` once first.
+artifact. Playwright Chromium is a devDependency of `slides/`; to export locally,
+run `npx playwright-core install chromium` once from `slides/`.
 
 Pull requests run the same build and export but do not deploy. To test a PR before
 merging, open its workflow run and download the `presentation-exports` artifact
@@ -63,7 +67,8 @@ merging, open its workflow run and download the `presentation-exports` artifact
 ## Theme and template
 
 All decks use the shared local theme in `themes/sykehuspartner/` (Sykehuspartner design,
-based on `sykehuspartner-marp-theme.css`). A deck opts in with
+based on `sykehuspartner-marp-theme.css`), except decks that use the published
+`@sp-days-framework/slidev-theme-sykehuspartner` package instead. A deck opts in with
 `theme: ../../themes/sykehuspartner` in its headmatter. The theme provides:
 
 - `package.json` holds the deck defaults: 1920x1080 canvas (`canvasWidth`), dark mode,
@@ -76,7 +81,7 @@ based on `sykehuspartner-marp-theme.css`). A deck opts in with
 - `example.md` is a gallery of every component: `npx slidev themes/sykehuspartner/example.md`
 
 Changes to the theme affect every deck. Put deck-specific CSS in
-`presentations/<deck>/style.css`.
+`slides/<deck>/style.css`.
 
 ## Drawing live on slides
 
@@ -102,6 +107,6 @@ in `npm run dev:<deck>` and on GitHub Pages.
 - **`slide-designer` agent** (`.github/agents/slide-designer.agent.md`): pick it in the
   Copilot Chat agent picker and describe the deck or slide you want. It can scaffold new
   decks and add or edit slides, and it checks its work with `slidev build` and PNG screenshots.
-- **`sykehuspartner-slides` skill** (`.github/skills/sykehuspartner-slides/`) holds the design rules,
-  the component catalog and the starter deck. It loads automatically for slide work, or invoke it with
-  `/sykehuspartner-slides`.
+- **`slidev-sykehuspartner` skill** (`.github/skills/slidev-sykehuspartner/`) sets up Slidev with
+  the Sykehuspartner theme and covers layouts, components and exports. It loads automatically for
+  slide work, or invoke it with `/slidev-sykehuspartner`.

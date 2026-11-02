@@ -2,12 +2,9 @@
   "name": "sp-presentatins",
   "private": true,
   "scripts": {
-    "dev": "slidev",
-    "build": "slidev build",
-    "export": "slidev export",
-    "dev:automation": "slidev presentations/automation/slides.md",
-    "build:automation": "slidev build presentations/automation/slides.md",
-    "export:automation": "slidev export presentations/automation/slides.md"
+    "dev:automation": "slidev slides/automation/slides.md",
+    "build:automation": "slidev build slides/automation/slides.md",
+    "export:automation": "slidev export slides/automation/slides.md"
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.2.10",
