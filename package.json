@@ -2,18 +2,8 @@
   "name": "sp-presentatins",
   "private": true,
   "scripts": {
-    "dev": "slidev",
-    "build": "slidev build",
-    "export": "slidev export",
-    "dev:automation": "slidev presentations/automation/slides.md",
-    "build:automation": "slidev build presentations/automation/slides.md",
-    "export:automation": "slidev export presentations/automation/slides.md"
-  },
-  "devDependencies": {
-    "@iconify-json/carbon": "^1.2.10",
-    "@slidev/cli": "^52.6.0"
-  },
-  "dependencies": {
-    "@slidev/theme-default": "^0.25.0"
+    "dev:automation": "npm --prefix slides run dev -- automation/slides.md",
+    "build:automation": "npm --prefix slides run build -- automation/slides.md",
+    "export:automation": "npm --prefix slides run export -- automation/slides.md"
   }
 }

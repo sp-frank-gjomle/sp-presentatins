@@ -1,31 +1,32 @@
 # sp-presentatins
 
 Repo for my presentations, built with [Slidev](https://sli.dev/). Each
-presentation lives in its own directory under `presentations/`.
+presentation lives in its own directory under `slides/`.
 
 ## Getting started
 
 Install dependencies:
 
 ```bash
-npm install
+npm install --prefix slides
 ```
 
-Start the "Automasjon i drift og vedlikehold" presentation (converted from HTML):
+Start the "Automasjon i drift og vedlikehold" presentation (runs Slidev from `slides/`):
 
 ```bash
 npm run dev:automation
 ```
 
-Add future presentations as separate directories under `presentations/`.
+Add future presentations as separate directories under `slides/`.
 
 To run another presentation in its own directory, for example
-`presentations/my-talk/slides.md`, use:
+`slides/my-talk/slides.md`, use:
 
 ```bash
-npx slidev presentations/my-talk/slides.md
-npx slidev build presentations/my-talk/slides.md
-npx slidev export presentations/my-talk/slides.md
+cd slides
+npx slidev my-talk/slides.md
+npx slidev build my-talk/slides.md
+npx slidev export my-talk/slides.md
 ```
 
 ## Build and export
@@ -37,8 +38,8 @@ npm run export:automation
 
 ## Publish to GitHub Pages
 
-`.github/workflows/deploy-pages.yml` builds every `presentations/*/slides.md`
-on each push to `main` and deploys them to GitHub Pages, with a landing page
+`.github/workflows/deploy-pages.yml` builds every `slides/*/slides.md`
+(using the dependencies in `slides/package.json`) on each push to `main` and deploys them to GitHub Pages, with a landing page
 listing all decks:
 
 - https://sp-frank-gjomle.github.io/sp-presentatins/
@@ -46,32 +47,41 @@ listing all decks:
 
 Enable it once under **Settings → Pages → Source: GitHub Actions**. Decks use
 `routerMode: hash` so direct slide links (e.g. `/automation/#/5`) work on Pages.
-New decks added under `presentations/` are published automatically.
+New decks added under `slides/` are published automatically.
 
 The workflow also exports each deck to PDF and PPTX with `slidev export`
-(using Playwright Chromium, which CI installs with `--no-save`). The landing page
+(using Playwright Chromium from `slides/` devDependencies). The landing page
 links to the exports, for example
 `https://sp-frank-gjomle.github.io/sp-presentatins/automation/automation.pdf`.
 They are also attached to each workflow run as the `presentation-exports`
-artifact. To export locally, run `npm i -D playwright-chromium` once first.
+artifact. Playwright Chromium is a devDependency of `slides/`; to export locally,
+run `npx playwright-core install chromium` once from `slides/`.
+
+Pull requests run the same build and export but do not deploy. To test a PR before
+merging, open its workflow run and download the `presentation-exports` artifact
+(PDF/PPTX) or the `site-preview` artifact. Unzip `site-preview` and serve it with
+`npx serve <folder>` to click through the decks.
 
 ## Theme and template
 
-All decks use the shared local theme in `themes/sykehuspartner/` (Sykehuspartner design,
-based on `sykehuspartner-marp-theme.css`). A deck opts in with
-`theme: ../../themes/sykehuspartner` in its headmatter. The theme provides:
+All decks use the published `@sp-days-framework/slidev-theme-sykehuspartner` package
+(`theme: "@sp-days-framework/slidev-theme-sykehuspartner"` in the headmatter, installed in
+`slides/package.json`). Its documentation ships with the package in
+`slides/node_modules/@sp-days-framework/slidev-theme-sykehuspartner/docs/`.
 
-- `package.json` holds the deck defaults: 1920x1080 canvas (`canvasWidth`), dark mode,
-  `routerMode: hash`, fonts, `lang: no` and the fade transition
-- `styles/sykehuspartner.css` holds colors and all components (cards, flow, timeline,
-  pipeline, agenda, admonitions, …)
-- `slide-bottom.vue` renders the logo, the footer (deck `title`, plus the slide's `topic`) and the page number
+The theme provides layouts, logo, colors (`--sp-primary`, `--sp-success`, `--sp-warning`,
+`--sp-danger`, `--sp-info`) and typography on a 980x552 canvas. Deck-specific parts live in the
+deck folder, for example in `slides/automation/`:
+
+- `style.css` holds the deck's components (cards, flow, timeline, pipeline, agenda,
+  admonitions, …), sized for the 980x552 canvas and colored with the theme variables
+- `global-top.vue` renders the page number and `slide-bottom.vue` the footer (deck `title`,
+  plus the slide's `topic`)
 - `custom-nav-controls.vue` and `animations.ts` add the animation toggle (key `A`) and the
   drawing hotkey (key `P`)
-- `example.md` is a gallery of every component: `npx slidev themes/sykehuspartner/example.md`
 
-Changes to the theme affect every deck. Put deck-specific CSS in
-`presentations/<deck>/style.css`.
+`themes/sykehuspartner/` is the earlier local theme (1920x1080, based on
+`sykehuspartner-marp-theme.css`). No deck uses it anymore.
 
 ## Drawing live on slides
 
@@ -97,6 +107,6 @@ in `npm run dev:<deck>` and on GitHub Pages.
 - **`slide-designer` agent** (`.github/agents/slide-designer.agent.md`): pick it in the
   Copilot Chat agent picker and describe the deck or slide you want. It can scaffold new
   decks and add or edit slides, and it checks its work with `slidev build` and PNG screenshots.
-- **`sykehuspartner-slides` skill** (`.github/skills/sykehuspartner-slides/`) holds the design rules,
-  the component catalog and the starter deck. It loads automatically for slide work, or invoke it with
-  `/sykehuspartner-slides`.
+- **`slidev-sykehuspartner` skill** (`.github/skills/slidev-sykehuspartner/`) sets up Slidev with
+  the Sykehuspartner theme and covers layouts, components and exports. It loads automatically for
+  slide work, or invoke it with `/slidev-sykehuspartner`.
