@@ -4,6 +4,9 @@
   "scripts": {
     "dev:automation": "npm --prefix slides run dev -- automation/slides.md",
     "build:automation": "npm --prefix slides run build -- automation/slides.md",
-    "export:automation": "npm --prefix slides run export -- automation/slides.md"
+    "export:automation": "npm --prefix slides run export -- automation/slides.md",
+    "dev:byggteknisk": "npm --prefix slides run dev -- byggteknisk-workshop/slides.md",
+    "build:byggteknisk": "npm --prefix slides run build -- byggteknisk-workshop/slides.md",
+    "export:byggteknisk": "npm --prefix slides run export -- byggteknisk-workshop/slides.md"
   }
 }
