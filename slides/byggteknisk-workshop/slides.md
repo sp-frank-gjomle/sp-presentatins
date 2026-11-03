@@ -149,7 +149,7 @@ topic: VS Code
 <div class="card accent reveal" style="--c:var(--vscode)"><h4>✏️ Editor</h4><p>Fargekoding, autofullføring og feilmarkering for YAML, PowerShell m.m.</p></div>
 <div class="card accent reveal" style="--c:var(--vscode)"><h4>⌨️ Terminal</h4><p>PowerShell rett i editoren – i riktig mappe</p></div>
 <div class="card accent reveal" style="--c:var(--git)"><h4>🌿 Git innebygd</h4><p>Se endringer, commit, push og pull uten kommandoer</p></div>
-<div class="card accent reveal" style="--c:var(--sp-primary)"><h4>🧩 Extensions</h4><p>Utvid med støtte for Ansible, GitLab og mer</p></div>
+<div class="card accent reveal" style="--c:var(--sp-primary)"><h4>🧩 Extensions</h4><p>Godkjente tillegg for Ansible, PowerShell, Copilot m.m.</p></div>
 <div class="card accent reveal" style="--c:var(--sp-primary)"><h4>📝 Markdown</h4><p>Skriv dokumentasjon med forhåndsvisning</p></div>
 <div class="card accent reveal" style="--c:var(--sp-primary)"><h4>🔍 Søk overalt</h4><p>Finn tekst og filer i hele repoet</p></div>
 </div>
@@ -162,20 +162,22 @@ For oss er poenget at alt vi trenger for automasjon er samlet på ett sted.
 ---
 layout: default
 topic: VS Code
-clicks: 6
+clicks: 7
 ---
 
-# Vinduet – fem områder og en kommandolinje
+# Vinduet i VS Code
 
 <VscodeAnatomy :step="$clicks" />
 
 <!--
-[click] Activity Bar: ikonene til venstre bytter visning – Explorer, søk, Source Control (Git) og Extensions.
-[click] Side Bar: viser innholdet i valgt visning. Her: filene i repoet.
+Skissen følger standardtemaet «Dark Modern» i dagens VS Code.
+[click] Activity Bar: ikonene til venstre bytter visning – Explorer, søk, Source Control (Git), Run and Debug og Extensions.
+[click] Primary Side Bar: viser innholdet i valgt visning. Her: filene i repoet.
 [click] Editor: filene du har åpne, i faner. Du kan dele vinduet i flere editorer.
-[click] Panel: terminalen ligger her, sammen med Output og Problems.
+[click] Panel: terminalen ligger her, sammen med Problems og Output.
 [click] Status Bar: viser blant annet hvilken branch du står på. Klikk på branch-navnet for å bytte eller lage ny.
-[click] Command Palette – Ctrl+Shift+P. Den viktigste snarveien: alt VS Code kan gjøre finnes her.
+[click] Command Center øverst: klikk eller trykk Ctrl+Shift+P for Command Palette. Alt VS Code kan gjøre finnes her.
+[click] Secondary Side Bar til høyre: her ligger Copilot Chat. Kan lukkes hvis du ikke bruker den.
 -->
 
 ---
@@ -427,6 +429,8 @@ ratio: "52%"
 Source Control åpnes med Ctrl+Shift+G, eller grenikonet i Activity Bar.
 Bokstavene bak filene: M = endret (modified), A = lagt til, U = ny fil som Git ikke følger ennå (untracked).
 Publish Branch dukker opp første gang en ny branch skal til GitLab. Etterpå heter knappen Sync Changes.
+Graph nederst viser commitene og hvilken branch de ligger på.
+Copilot-ikonet i meldingsfeltet kan foreslå en commit-melding.
 -->
 
 ---
@@ -467,16 +471,16 @@ topic: Extensions
 <div class="arrow">+</div>
 <div class="node reveal"><div class="badge" style="--c:var(--sp-warning);color:#000">⚠️</div><b>Validering</b><span>Feil markeres mens du skriver – før pipelinen feiler</span></div>
 <div class="arrow">+</div>
-<div class="node reveal"><div class="badge" style="--c:var(--gitlab)">🔗</div><b>Integrasjoner</b><span>F.eks. GitLab: se MR-er og pipelines fra VS Code</span></div>
+<div class="node reveal"><div class="badge" style="--c:#333">🤖</div><b>Hjelp og verktøy</b><span>F.eks. GitHub Copilot, diagrammer og ikoner</span></div>
 </div>
 
 <div class="columns-2-top" style="margin-top:20px">
-<div class="card reveal"><h4>Slik installerer du</h4><p><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> → søk → <strong>Install</strong></p></div>
-<div class="admonition warning reveal">Installer bare extensions fra kjente utgivere – de kjører kode på PC-en din.</div>
+<div class="card reveal"><h4>Slik installerer du</h4><p><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> → søk på navn eller ID → <strong>Install</strong></p></div>
+<div class="admonition warning reveal">Bare <strong>godkjente</strong> extensions er tillatt – se neste slide.</div>
 </div>
 
 <!--
-Vis gjerne at utgiveren har et verifisert merke (blå hake) i Marketplace.
+Extensions kjører kode på PC-en din. Derfor har vi en fast liste over hva som er lov å installere.
 -->
 
 ---
@@ -484,21 +488,65 @@ layout: default
 topic: Extensions
 ---
 
-# Extensions vi bruker
+# Godkjente extensions
 
-<div class="card-grid" style="--cols:2">
-<div class="card accent reveal" style="--c:var(--ansible)"><h4><span class="i-vscode-icons:file-type-ansible" /> Ansible <span class="xs muted">· Red Hat</span></h4><p>Syntaks, autofullføring og dokumentasjon for playbooks og moduler</p></div>
-<div class="card accent reveal" style="--c:var(--sp-primary)"><h4><span class="i-vscode-icons:file-type-yaml" /> YAML <span class="xs muted">· Red Hat</span></h4><p>Validering av YAML – fanger feil innrykk tidlig</p></div>
-<div class="card accent reveal" style="--c:var(--pwsh)"><h4><span class="i-vscode-icons:file-type-powershell" /> PowerShell <span class="xs muted">· Microsoft</span></h4><p>Kjøre, feilsøke og formatere PowerShell-skript</p></div>
-<div class="card accent reveal" style="--c:var(--gitlab)"><h4><span class="i-vscode-icons:file-type-gitlab" /> GitLab Workflow <span class="xs muted">· GitLab</span></h4><p>Merge requests, issues og pipeline-status rett i VS Code</p></div>
+<div class="card-grid ext-groups" style="--cols:2">
+<div class="card accent reveal" style="--c:var(--ansible)"><h4>🅰️ Ansible og PowerShell</h4>
+<div class="ext"><b>Ansible</b><code>redhat.ansible</code></div>
+<div class="ext"><b>Ansible Vault</b><code>ipierre1.ansible-vault-vscode</code></div>
+<div class="ext"><b>PowerShell</b><code>ms-vscode.powershell</code></div>
+</div>
+<div class="card accent reveal" style="--c:var(--sp-primary)"><h4>🤖 AI-assistent</h4>
+<div class="ext"><b>GitHub Copilot</b><code>github.copilot</code></div>
+<div class="ext"><b>GitHub Copilot Chat</b><code>github.copilot-chat</code></div>
+</div>
+<div class="card accent reveal" style="--c:var(--git)"><h4>📝 Markdown og dokumentasjon</h4>
+<div class="ext"><b>markdownlint</b><code>davidanson.vscode-markdownlint</code></div>
+<div class="ext"><b>Mermaid i Markdown</b><code>bierner.markdown-mermaid</code></div>
+<div class="ext"><b>Draw.io</b><code>hediet.vscode-drawio</code></div>
+<div class="ext"><b>Marp</b><code>marp-team.marp-vscode</code></div>
+<div class="ext"><b>MDX</b><code>unifiedjs.vscode-mdx</code></div>
+</div>
+<div class="card accent reveal" style="--c:var(--border)"><h4>🎨 Annet</h4>
+<div class="ext"><b>Material Icon Theme</b><code>pkief.material-icon-theme</code></div>
+<div class="ext"><b>ESLint</b><code>dbaeumer.vscode-eslint</code></div>
+</div>
 </div>
 
-<div class="admonition tip reveal" style="margin-top:18px">
-Et repo kan <strong>anbefale</strong> extensions i <code>.vscode/extensions.json</code> – VS Code foreslår dem når du åpner mappen.
+<style>
+.ext-groups { grid-auto-rows: auto; gap: 10px; }
+.ext-groups .card { padding: 10px 14px; }
+.ext-groups h4 { font-size: 1rem; margin-bottom: 4px; }
+.ext { display: flex; justify-content: space-between; gap: 10px; font-size: 0.78rem; line-height: 1.55; }
+.ext code { font-size: 0.7rem; opacity: 0.75; }
+</style>
+
+<!--
+Dette er hele listen over extensions vi har lov til å installere.
+Søk gjerne på ID-en i Extensions-visningen, så får du riktig extension og ikke en kopi med lignende navn.
+-->
+
+---
+layout: default
+topic: Extensions
+---
+
+# De viktigste for oss i dag
+
+<div class="card-grid" style="--cols:2">
+<div class="card accent reveal" style="--c:var(--ansible)"><h4><span class="i-vscode-icons:file-type-ansible" /> Ansible</h4><p>Fargekoding, autofullføring og dokumentasjon for playbooks og moduler. Fanger feil innrykk i YAML.</p></div>
+<div class="card accent reveal" style="--c:var(--pwsh)"><h4><span class="i-vscode-icons:file-type-powershell" /> PowerShell</h4><p>IntelliSense, kjøring og feilsøking av PowerShell-skript</p></div>
+<div class="card accent reveal" style="--c:var(--git)"><h4><span class="i-vscode-icons:file-type-markdown" /> markdownlint</h4><p>Tips om god Markdown når du skriver README og dokumentasjon</p></div>
+<div class="card accent reveal" style="--c:var(--sp-primary)"><h4><span class="i-vscode-icons:file-type-markdown" /> Mermaid i Markdown</h4><p>Viser Mermaid-diagrammer i Markdown-forhåndsvisningen (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>V</kbd>)</p></div>
+</div>
+
+<div class="admonition info reveal" style="margin-top:18px">
+Ingen extension for GitLab: pipelines startes og følges i <strong>GitLab i nettleseren</strong>.
 </div>
 
 <!--
-Markdown-forhåndsvisning er innebygd, så den trenger ingen extension.
+Git (clone, commit, push, pull) er innebygd i VS Code og trenger ingen extension.
+Alt som har med pipelines å gjøre, gjør vi i GitLab i nettleseren.
 -->
 
 ---
@@ -920,7 +968,7 @@ ratio: "48%"
 ::right::
 
 <div class="reveal">
-<p class="small" style="margin:0 0 6px"><strong>Bonus:</strong> GitLab tegner diagrammer fra tekst (Mermaid):</p>
+<p class="small" style="margin:0 0 6px"><strong>Bonus:</strong> GitLab og VS Code tegner diagrammer fra tekst (Mermaid):</p>
 
 ```md
 ~~~mermaid
@@ -934,7 +982,7 @@ flowchart LR
 <div class="admonition tip reveal" style="margin-top:12px">Diagrammet versjoneres som tekst, som all annen kode.</div>
 
 <!--
-Mermaid gjengis i GitLab sin Markdown-visning. Diagrammet oppdateres i samme merge request som koden.
+Mermaid gjengis i GitLab sin Markdown-visning, og i VS Code med den godkjente extensionen «Markdown Preview Mermaid Support». Diagrammet oppdateres i samme merge request som koden.
 -->
 
 ---
@@ -981,9 +1029,9 @@ ratio: "52%"
 ::left::
 
 <ul>
-<li class="reveal">Et program (<code>gitlab-runner</code>) på en server som er <strong>koblet til GitLab</strong></li>
-<li class="reveal">Den <strong>spør GitLab</strong> om det finnes jobber, og henter koden fra repoet</li>
-<li class="reveal">Kjører kommandoene i jobben og <strong>sender logg og status</strong> tilbake</li>
+<li class="reveal">Et program (<code>gitlab-runner</code>) på en <strong>egen server</strong> – ikke på GitLab-serveren</li>
+<li class="reveal">GitLab <strong>sender jobben</strong> til runneren, sammen med koden fra repoet</li>
+<li class="reveal">Runneren kjører kommandoene og <strong>sender logg og status</strong> tilbake</li>
 <li class="reveal">Hos oss: en <strong>delt runner på RHEL</strong>. Det finnes runnere for både Ansible og PowerShell</li>
 </ul>
 
@@ -995,26 +1043,24 @@ ratio: "52%"
 <defs>
 <marker id="ah-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" style="fill:var(--sp-primary)"/></marker>
 </defs>
-<rect x="150" y="10" width="400" height="130" rx="20" style="fill:color-mix(in srgb, var(--gitlab) 14%, transparent);stroke:var(--gitlab)" stroke-width="4"/>
+<rect x="150" y="10" width="400" height="140" rx="20" style="fill:color-mix(in srgb, var(--gitlab) 14%, transparent);stroke:var(--gitlab)" stroke-width="4"/>
 <text x="350" y="70" font-size="34" font-weight="800" text-anchor="middle" style="fill:currentColor">🦊 GitLab</text>
-<text x="350" y="112" font-size="24" text-anchor="middle" style="fill:currentColor;opacity:.75">jobb i kø</text>
+<text x="350" y="112" font-size="24" text-anchor="middle" style="fill:currentColor;opacity:.75">server 1 · pipelines</text>
 <rect x="150" y="440" width="400" height="150" rx="20" style="fill:color-mix(in srgb, var(--sp-primary) 14%, transparent);stroke:var(--sp-primary)" stroke-width="4"/>
 <text x="350" y="502" font-size="34" font-weight="800" text-anchor="middle" style="fill:currentColor">⚙️ Runner</text>
-<text x="350" y="546" font-size="24" text-anchor="middle" style="fill:currentColor;opacity:.75">RHEL-server</text>
+<text x="350" y="546" font-size="24" text-anchor="middle" style="fill:currentColor;opacity:.75">server 2 · RHEL</text>
 <g style="stroke:var(--sp-primary);fill:none" stroke-width="5" marker-end="url(#ah-r)">
-<path d="M220 436 L220 146"/>
-<path d="M350 146 L350 436"/>
-<path d="M480 436 L480 146"/>
+<path d="M260 156 L260 434"/>
+<path d="M440 436 L440 158"/>
 </g>
 <g font-size="24" style="fill:currentColor">
-<text x="40" y="270">① Har du</text><text x="40" y="302">noe til meg?</text>
-<text x="362" y="270">② Jobb +</text><text x="362" y="302">kode</text>
-<text x="492" y="270">③ Logg +</text><text x="492" y="302">status</text>
+<text x="50" y="280">① Jobb +</text><text x="50" y="312">kode</text>
+<text x="456" y="280">② Logg +</text><text x="456" y="312">status</text>
 </g>
 </svg>
 
 <!--
-Det er runneren som tar kontakt med GitLab, ikke omvendt. Den spør jevnlig om det finnes nye jobber.
+GitLab og runneren er to separate servere. GitLab deler ut jobben, runneren gjør arbeidet og rapporterer tilbake.
 Runneren er delt: alle prosjekter som får lov kan bruke den.
 -->
 
@@ -1151,8 +1197,7 @@ sequenceDiagram
   participant R as Runner (RHEL)
   participant W as Testserver (Windows)
   Du->>GL: Run pipeline på din branch
-  R->>GL: Har du en jobb til meg?
-  GL-->>R: Jobben + koden fra branchen
+  GL->>R: Jobben + koden fra branchen
   R->>W: ansible-playbook via WinRM
   W-->>R: pong
   R-->>GL: Logg og status
@@ -1804,7 +1849,7 @@ topic: Hands-on
 <div class="step reveal" style="--c:var(--gitlab)"><div class="circle">📥</div><b>1 · Klone</b><span>Demo-repoet til VS Code</span></div>
 <div class="step reveal" style="--c:var(--vscode)"><div class="circle">🌿</div><b>2 · Branch</b><span>Lag din egen branch</span></div>
 <div class="step reveal" style="--c:var(--vscode)"><div class="circle">☁️</div><b>3 · Publiser</b><span>Push branchen til GitLab</span></div>
-<div class="step reveal" style="--c:var(--sp-primary)"><div class="circle">▶️</div><b>4 · Kjør</b><span>Run pipeline på din branch</span></div>
+<div class="step reveal" style="--c:var(--sp-primary)"><div class="circle">▶️</div><b>4 · Kjør</b><span>Run pipeline i GitLab (nettleseren)</span></div>
 <div class="step reveal" style="--c:var(--sp-success)"><div class="circle">🏓</div><b>5 · Les loggen</b><span>Finn <code>pong</code> og PLAY RECAP</span></div>
 </div>
 
@@ -1952,7 +1997,7 @@ topic: Oppsummering
 # Hva har vi sett i dag?
 
 <div class="card-grid">
-<div class="card accent reveal" style="--c:var(--vscode)"><h4>💻 VS Code</h4><p>Editor, terminal og Git i ett. Extensions for Ansible og YAML.</p></div>
+<div class="card accent reveal" style="--c:var(--vscode)"><h4>💻 VS Code</h4><p>Editor, terminal og Git i ett. Godkjente extensions for Ansible og PowerShell.</p></div>
 <div class="card accent reveal" style="--c:var(--git)"><h4>🌿 Git</h4><p>Commit, branch, push og pull – i terminal eller GUI</p></div>
 <div class="card accent reveal" style="--c:var(--gitlab)"><h4>🦊 GitLab</h4><p>Felles repo, merge requests, pipelines og dokumentasjon</p></div>
 <div class="card accent reveal" style="--c:var(--sp-primary)"><h4>⚙️ Runner</h4><p>RHEL-serveren som kjører jobbene fra <code>.gitlab-ci.yml</code></p></div>

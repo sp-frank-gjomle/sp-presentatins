@@ -32,6 +32,6 @@ npx slidev export byggteknisk-workshop/slides.md --format pptx --output dist/byg
 
 - `BigPicture` – the toolchain overview. `focus="vscode|gitlab|runner|proget|ansible"` highlights one part.
 - `GitAreas` – working directory → staging → local repo → GitLab, driven by `:step="$clicks"`.
-- `VscodeAnatomy` – sketch of the VS Code window with numbered areas, driven by `:step="$clicks"`.
-- `SourceControlMock` – sketch of the Source Control view.
+- `VscodeAnatomy` – sketch of the VS Code window (Dark Modern theme) with 7 numbered areas, driven by `:step="$clicks"`.
+- `SourceControlMock` – sketch of the Source Control view (Dark Modern theme).
 - `DemoCard` – demo checklist (`title`, `items`).
