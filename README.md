@@ -17,6 +17,12 @@ Start the "Automasjon i drift og vedlikehold" presentation (runs Slidev from `sl
 npm run dev:automation
 ```
 
+Start the "Byggteknisk – Automation workshop" presentation:
+
+```bash
+npm run dev:byggteknisk
+```
+
 Add future presentations as separate directories under `slides/`.
 
 To run another presentation in its own directory, for example
