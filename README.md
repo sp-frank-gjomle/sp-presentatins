@@ -23,6 +23,10 @@ Start the "Byggteknisk – Automation workshop" presentation:
 npm run dev:byggteknisk
 ```
 
+The dev server runs with `--remote` so it listens on `0.0.0.0` instead of only `localhost`.
+This is needed in GitHub Codespaces: open the forwarded port 3030 from the **Ports** tab
+(the `*.app.github.dev` URL), not `http://localhost:3030`.
+
 Add future presentations as separate directories under `slides/`.
 
 To run another presentation in its own directory, for example
@@ -104,7 +108,8 @@ in `npm run dev:<deck>` and on GitHub Pages.
 - A stylus draws even when drawing mode is off.
 - Drawings sync live between the presenter view (`/#/presenter/1`) and the audience view.
   On Pages, both windows must be in the same browser. To let the audience follow on their own
-  devices, present from the dev server with `npm run dev:<deck> -- --remote <password>`.
+  devices, present from the dev server with a password:
+  `cd slides && npx slidev <deck>/slides.md --open false --remote <password>`.
 - Drawings are not saved (`persist: false`), so they are gone after a reload and are not
   included in the PDF/PPTX exports. `presenterOnly: true` would allow drawing only from the presenter view.
 

@@ -1322,15 +1322,35 @@ topic: ProGet
 
 <p class="lead reveal">En <strong>egen server</strong> med et internt lager for pakker og filer, fra Inedo. Automasjonen henter fra ProGet i stedet for fra internett eller delte mapper.</p>
 
-<div class="flow">
-<div class="node reveal" style="--c:var(--border)"><div class="badge" style="--c:#555">🌐</div><b>Kilder</b><span>Leverandører, internett, egne bygg</span></div>
-<div class="arrow">➜</div>
-<div class="node reveal" style="--c:var(--proget)"><div class="badge" style="--c:var(--proget)">📦</div><b>ProGet</b><span>Lagret, versjonert og tilgangsstyrt</span></div>
-<div class="arrow">➜</div>
-<div class="node reveal" style="--c:var(--sp-primary)"><div class="badge">⚙️</div><b>Runner</b><span>Henter container-images, og ber serverne laste ned filer</span></div>
-<div class="arrow">➜</div>
-<div class="node reveal" style="--c:var(--windows)"><div class="badge" style="--c:var(--windows)">🖥️</div><b>Servere</b><span>Henter installasjonsfilene direkte fra ProGet</span></div>
+<div class="hub">
+<div class="node src reveal" style="--c:var(--border)"><div class="badge" style="--c:#555">🌐</div><b>Kilder</b><span>Leverandører, internett, egne bygg</span></div>
+<div class="harrow in reveal"><span>lastes inn</span>➜</div>
+<div class="node core reveal" style="--c:var(--proget)"><div class="badge" style="--c:var(--proget)">📦</div><b>ProGet</b><span>Feeds og assets – lagret, versjonert og tilgangsstyrt</span></div>
+<div class="harrow out1 reveal"><span>image</span>➜</div>
+<div class="harrow out2 reveal"><span>pakker / filer</span>➜</div>
+<div class="node use1 reveal" style="--c:var(--sp-primary)"><div class="badge">⚙️</div><div><b>Runner</b><span>Henter container-imaget jobben kjører i</span></div></div>
+<div class="node use2 reveal" style="--c:var(--windows)"><div class="badge" style="--c:var(--windows)">🖥️</div><div><b>Servere</b><span>Henter pakker og filer fra feeds og assets ved behov</span></div></div>
 </div>
+
+<style>
+.hub { display: grid; grid-template-columns: 1fr 90px 1.25fr 110px 1.45fr; grid-template-rows: 1fr 1fr; gap: 12px 0; align-items: stretch; }
+.hub .node { background: var(--surface); border: 1px solid var(--c); border-radius: 9px; padding: 11px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.hub .node b { font-size: 1rem; }
+.hub .node span { display: block; font-size: 0.75rem; opacity: 0.75; line-height: 1.3; margin-top: 3px; }
+.hub .node .badge { margin-bottom: 6px; }
+.hub .src { grid-column: 1; grid-row: 1 / 3; }
+.hub .core { grid-column: 3; grid-row: 1 / 3; border-width: 3px; background: color-mix(in srgb, var(--proget) 14%, transparent); }
+.hub .core b { font-size: 1.35rem; }
+.hub .use1, .hub .use2 { grid-column: 5; flex-direction: row; gap: 12px; text-align: left; justify-content: flex-start; }
+.hub .use1 .badge, .hub .use2 .badge { margin: 0; flex: none; }
+.hub .use1 { grid-row: 1; }
+.hub .use2 { grid-row: 2; }
+.hub .harrow { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--sp-primary); font-size: 25px; font-weight: 800; line-height: 1; }
+.hub .harrow span { font-size: 0.7rem; font-weight: 600; opacity: 0.85; margin-bottom: 2px; }
+.hub .in { grid-column: 2; grid-row: 1 / 3; }
+.hub .out1 { grid-column: 4; grid-row: 1; color: var(--sp-primary); }
+.hub .out2 { grid-column: 4; grid-row: 2; color: var(--windows); }
+</style>
 
 <div class="columns-3-top" style="margin-top:20px">
 <div class="admonition tip reveal">Én kontrollert kilde</div>
@@ -1339,17 +1359,20 @@ topic: ProGet
 </div>
 
 <!--
+ProGet er navet. Alt vi trenger lastes inn i ProGet én gang, og så henter de som trenger det derfra.
+Runneren henter container-imaget (Ansible/PowerShell) som jobben skal kjøre i.
+Serverne henter selv pakker og filer fra feeds og assets når de trenger dem, f.eks. når en playbook installerer noe.
 Poenget: automasjonen skal være forutsigbar. Henter vi fra internett, kan filen endre seg eller forsvinne. I ProGet har vi kontroll.
 -->
 
 ---
-layout: two-cols-header
+layout: default
 topic: ProGet
 ---
 
 # Feeds og assets
 
-::left::
+<div class="columns-2-top" style="margin-top:6px">
 
 <div class="card accent reveal" style="--c:var(--sp-primary)">
 <h4>📚 Feeds</h4>
@@ -1361,8 +1384,6 @@ topic: ProGet
 </ul>
 </div>
 
-::right::
-
 <div class="card accent reveal" style="--c:var(--proget)">
 <h4>🗃️ Assets <span class="xs muted">(asset directories)</span></h4>
 <p style="margin-bottom:8px">Vanlige <strong>filer i mapper</strong> – uansett type.</p>
@@ -1373,9 +1394,9 @@ topic: ProGet
 </ul>
 </div>
 
-::bottom::
+</div>
 
-<div class="admonition info reveal" style="margin-top:14px">
+<div class="admonition info reveal" style="margin-top:22px">
 Tommelfingerregel: <strong>pakke</strong> med pakkeverktøy → feed. <strong>Fil</strong> du bare skal laste ned → asset.
 </div>
 
@@ -1461,15 +1482,15 @@ topic: Ansible
 
 # Hva er Ansible?
 
-<p class="lead reveal">Et verktøy for å <strong>beskrive</strong> hva som skal gjøres på servere, i lesbar YAML – og <strong>gjøre det</strong>, likt hver gang.</p>
+<p class="lead reveal">Automatisering av servere – <strong>skrevet i YAML</strong>, <strong>utført likt</strong> hver gang.</p>
 
 <div class="card-grid">
-<div class="card accent reveal" style="--c:var(--ansible)"><div class="badge" style="--c:var(--ansible)">🪶</div><h4>Agentløst</h4><p>Ingen agent å installere – Windows nås over WinRM, som er innebygd</p></div>
-<div class="card accent reveal" style="--c:var(--ansible)"><div class="badge" style="--c:var(--ansible)">📄</div><h4>YAML</h4><p>Lesbart for mennesker, kjørbart for maskiner</p></div>
-<div class="card accent reveal" style="--c:var(--ansible)"><div class="badge" style="--c:var(--ansible)">🔁</div><h4>Idempotent</h4><p>Endrer bare det som ikke allerede er riktig</p></div>
-<div class="card accent reveal" style="--c:var(--sp-primary)"><div class="badge">🧩</div><h4>Moduler</h4><p>Ferdige byggeklosser for tjenester, pakker, filer m.m.</p></div>
-<div class="card accent reveal" style="--c:var(--sp-primary)"><div class="badge">🐧🪟</div><h4>Linux og Windows</h4><p>Samme verktøy og arbeidsmåte for begge</p></div>
-<div class="card accent reveal" style="--c:var(--sp-primary)"><div class="badge">📈</div><h4>Skalerer</h4><p>Én server eller hundre – samme playbook</p></div>
+<div class="card accent reveal" style="--c:var(--ansible)"><div class="badge" style="--c:var(--ansible)">🪶</div><h4>Agentløst</h4><p>Bruker SSH og WinRM – ingenting å installere</p></div>
+<div class="card accent reveal" style="--c:var(--ansible)"><div class="badge" style="--c:var(--ansible)">📄</div><h4>Lesbart</h4><p>YAML som både mennesker og maskiner forstår</p></div>
+<div class="card accent reveal" style="--c:var(--ansible)"><div class="badge" style="--c:var(--ansible)">🔁</div><h4>Idempotent</h4><p>Endrer bare det som avviker</p></div>
+<div class="card accent reveal" style="--c:var(--sp-primary)"><div class="badge">🧩</div><h4>Modulært</h4><p>Ferdige byggeklosser for vanlige oppgaver</p></div>
+<div class="card accent reveal" style="--c:var(--sp-primary)"><div class="badge">🖥️</div><h4>Plattformuavhengig</h4><p>Samme verktøy for Linux og Windows</p></div>
+<div class="card accent reveal" style="--c:var(--sp-primary)"><div class="badge">📈</div><h4>Skalerbart</h4><p>Én server eller hundre – samme playbook</p></div>
 </div>
 
 <!--
@@ -1522,7 +1543,7 @@ topic: Ansible
 </svg>
 
 <div class="columns-2-top" style="margin-top:8px">
-<div class="admonition info reveal">Du logger ikke på RHEL-serveren – pipelinen starter Ansible for deg.</div>
+<div class="admonition info reveal">Du logger ikke på runner-server – pipelinen starter Ansible for deg.</div>
 <div class="admonition tip reveal">Ingen agent på Windows-serverne.</div>
 </div>
 
@@ -1542,9 +1563,9 @@ ratio: "55%"
 ::left::
 
 <div class="nest-a reveal" style="--c:var(--ansible)">
-<span class="lbl">▶️ Playbook <span class="xs muted">– fil</span></span>
+<span class="lbl">▶️ Playbook <span class="xs muted">– "oppskriften"</span></span>
 <div class="nest-a" style="--c:var(--sp-warning)">
-<span class="lbl">🎯 Play <span class="xs muted">– hvilke servere</span></span>
+<span class="lbl">🎯 Play <span class="xs muted">– hosts + tasks</span></span>
 <div class="nest-a" style="--c:var(--sp-primary)">
 <span class="lbl">✅ Task <span class="xs muted">– ett steg</span></span>
 <div class="mod">🧩 Modul – f.eks. <code>win_ping</code></div>
@@ -1751,12 +1772,14 @@ ratio: "52%"
 
 ::left::
 
-<div class="tree reveal">demo-repo/
-├── <span class="hl">.gitlab-ci.yml</span>   <span class="dim">← pipelinen</span>
-├── <span class="hl">inventory.yml</span>    <span class="dim">← hvilke servere</span>
-├── <span class="hl">ping.yml</span>         <span class="dim">← playbooken</span>
-├── ansible.cfg      <span class="dim">← innstillinger</span>
-└── README.md        <span class="dim">← dokumentasjon</span></div>
+<div class="tree reveal">
+<div class="row">demo-repo/</div>
+<div class="row"><span class="f">├── <span class="hl">.gitlab-ci.yml</span></span><span class="dim">← pipelinen</span></div>
+<div class="row"><span class="f">├── <span class="hl">inventory.yml</span></span><span class="dim">← hvilke servere</span></div>
+<div class="row"><span class="f">├── <span class="hl">ping.yml</span></span><span class="dim">← playbooken</span></div>
+<div class="row"><span class="f">├── ansible.cfg</span><span class="dim">← innstillinger</span></div>
+<div class="row"><span class="f">└── README.md</span><span class="dim">← dokumentasjon</span></div>
+</div>
 
 <p class="xs muted" style="margin-top:8px">Typisk oppsett. Demo-repoet kan være litt annerledes.</p>
 
