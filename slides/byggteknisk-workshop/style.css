@@ -278,6 +278,9 @@
   white-space: pre;
 }
 
+/* Vue slår sammen linjeskift og mellomrom i maler, så hver linje er en egen .row */
+.slidev-layout .tree .row { display: flex; white-space: pre; }
+.slidev-layout .tree .row .f { flex: none; width: 19ch; }
 .slidev-layout .tree .dim { opacity: 0.55; }
 .slidev-layout .tree .hl { color: var(--sp-primary); font-weight: 700; }
 

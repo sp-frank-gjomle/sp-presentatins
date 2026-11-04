@@ -23,6 +23,10 @@ Start the "Byggteknisk – Automation workshop" presentation:
 npm run dev:byggteknisk
 ```
 
+The dev server runs with `--remote` so it listens on `0.0.0.0` instead of only `localhost`.
+This is needed in GitHub Codespaces: open the forwarded port 3030 from the **Ports** tab
+(the `*.app.github.dev` URL), not `http://localhost:3030`.
+
 Add future presentations as separate directories under `slides/`.
 
 To run another presentation in its own directory, for example
@@ -63,10 +67,8 @@ They are also attached to each workflow run as the `presentation-exports`
 artifact. Playwright Chromium is a devDependency of `slides/`; to export locally,
 run `npx playwright-core install chromium` once from `slides/`.
 
-Pull requests run the same build and export but do not deploy. To test a PR before
-merging, open its workflow run and download the `presentation-exports` artifact
-(PDF/PPTX) or the `site-preview` artifact. Unzip `site-preview` and serve it with
-`npx serve <folder>` to click through the decks.
+The workflow does not run on pull requests. It runs only when changes land on `main`
+(or when started manually from the Actions tab).
 
 ## Theme and template
 
@@ -104,7 +106,8 @@ in `npm run dev:<deck>` and on GitHub Pages.
 - A stylus draws even when drawing mode is off.
 - Drawings sync live between the presenter view (`/#/presenter/1`) and the audience view.
   On Pages, both windows must be in the same browser. To let the audience follow on their own
-  devices, present from the dev server with `npm run dev:<deck> -- --remote <password>`.
+  devices, present from the dev server with a password:
+  `cd slides && npx slidev <deck>/slides.md --open false --remote <password>`.
 - Drawings are not saved (`persist: false`), so they are gone after a reload and are not
   included in the PDF/PPTX exports. `presenterOnly: true` would allow drawing only from the presenter view.
 
