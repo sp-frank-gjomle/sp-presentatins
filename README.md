@@ -67,10 +67,8 @@ They are also attached to each workflow run as the `presentation-exports`
 artifact. Playwright Chromium is a devDependency of `slides/`; to export locally,
 run `npx playwright-core install chromium` once from `slides/`.
 
-Pull requests run the same build and export but do not deploy. To test a PR before
-merging, open its workflow run and download the `presentation-exports` artifact
-(PDF/PPTX) or the `site-preview` artifact. Unzip `site-preview` and serve it with
-`npx serve <folder>` to click through the decks.
+The workflow does not run on pull requests. It runs only when changes land on `main`
+(or when started manually from the Actions tab).
 
 ## Theme and template
 
