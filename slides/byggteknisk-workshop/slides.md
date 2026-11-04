@@ -81,16 +81,16 @@ topic: Helheten
 
 <BigPicture />
 
-<p class="small muted" style="margin-top:6px">Du skriver kode i <strong>VS Code</strong> → lagrer den i <strong>GitLab</strong> → en <strong>runner</strong> kjører <strong>Ansible</strong> mot serveren. Filer hentes fra <strong>ProGet</strong>.</p>
+<p class="small muted" style="margin-top:6px">Du skriver kode i <strong>VS Code</strong> og pusher med <strong>Git</strong> til <strong>GitLab</strong> → GitLab starter en <strong>pipeline</strong> → <strong>runner-serveren</strong> kjører jobben mot serverne. <strong>ProGet</strong> (egen server) lagrer feeds og assets som automasjonen bruker.</p>
 
 <!--
 Dette bildet kommer igjen gjennom hele dagen – vi zoomer inn på én boks om gangen.
 Gå gjennom fra venstre mot høyre:
-- VS Code på din PC, der du skriver og redigerer.
+- VS Code på din PC, der du skriver og redigerer. Git sender koden til GitLab.
 - GitLab: felles lagring av koden, og der pipelines startes.
-- Runneren: en RHEL-server som gjør selve jobben. Ingen logger på den – den styres fra GitLab.
-- Ansible kjører på runneren og snakker med Windows-serveren over WinRM.
-- ProGet: intern lagerplass for filer og pakker som serverne trenger.
+- Runner-serveren: en egen server med K3s som gjør selve jobben. Hver jobb kjører i en container. Ingen logger på den – den styres fra GitLab.
+- Ansible kjører i containeren på runneren og snakker med Windows-serveren over WinRM.
+- ProGet: egen server og intern lagerplass. Runneren henter container-images derfra, og serverne henter assets (installasjonsfiler) derfra.
 -->
 
 ---
@@ -723,7 +723,7 @@ ratio: "40%"
 <div class="s reveal"><div class="n">🕘</div><div><strong>Commits</strong> – hvem endret hva, og når</div></div>
 <div class="s reveal"><div class="n">🔀</div><div><strong>Merge requests</strong> – endringer som venter på godkjenning</div></div>
 <div class="s reveal"><div class="n">▶️</div><div><strong>Pipelines</strong> – kjøringer, status og logger</div></div>
-<div class="s reveal"><div class="n">⚙️</div><div><strong>Settings → CI/CD</strong> – variabler og runnere</div></div>
+<div class="s reveal"><div class="n">⚙️</div><div><strong>Settings → CI/CD</strong> – variabler og runner</div></div>
 </div>
 
 <style>
@@ -1030,9 +1030,9 @@ ratio: "52%"
 
 <ul>
 <li class="reveal">Et program (<code>gitlab-runner</code>) på en <strong>egen server</strong> – ikke på GitLab-serveren</li>
-<li class="reveal">GitLab <strong>sender jobben</strong> til runneren, sammen med koden fra repoet</li>
+<li class="reveal">Runneren <strong>spør GitLab etter jobber</strong> og henter koden fra branchen</li>
 <li class="reveal">Runneren kjører kommandoene og <strong>sender logg og status</strong> tilbake</li>
-<li class="reveal">Hos oss: en <strong>delt runner på RHEL</strong>. Det finnes runnere for både Ansible og PowerShell</li>
+<li class="reveal">Hos oss: <strong>én runner-server med K3s</strong>. Hver jobb kjører i en <strong>container</strong> – med et Ansible- eller PowerShell-image fra ProGet</li>
 </ul>
 
 <div class="admonition info reveal" style="margin-top:12px">Du logger aldri på runneren – den styres fra GitLab.</div>
@@ -1048,7 +1048,7 @@ ratio: "52%"
 <text x="350" y="112" font-size="24" text-anchor="middle" style="fill:currentColor;opacity:.75">server 1 · pipelines</text>
 <rect x="150" y="440" width="400" height="150" rx="20" style="fill:color-mix(in srgb, var(--sp-primary) 14%, transparent);stroke:var(--sp-primary)" stroke-width="4"/>
 <text x="350" y="502" font-size="34" font-weight="800" text-anchor="middle" style="fill:currentColor">⚙️ Runner</text>
-<text x="350" y="546" font-size="24" text-anchor="middle" style="fill:currentColor;opacity:.75">server 2 · RHEL</text>
+<text x="350" y="546" font-size="24" text-anchor="middle" style="fill:currentColor;opacity:.75">server 2 · K3s</text>
 <g style="stroke:var(--sp-primary);fill:none" stroke-width="5" marker-end="url(#ah-r)">
 <path d="M260 156 L260 434"/>
 <path d="M440 436 L440 158"/>
@@ -1060,7 +1060,9 @@ ratio: "52%"
 </svg>
 
 <!--
-GitLab og runneren er to separate servere. GitLab deler ut jobben, runneren gjør arbeidet og rapporterer tilbake.
+GitLab og runneren er to separate servere. Runneren spør GitLab om det finnes jobber, henter jobben og koden, gjør arbeidet og rapporterer tilbake.
+GitLab kobler seg aldri til runneren – det er runneren som tar kontakt.
+På runner-serveren kjører K3s (Kubernetes) med Flux. Hver jobb starter en container fra imaget som står i .gitlab-ci.yml, og containeren fjernes når jobben er ferdig.
 Runneren er delt: alle prosjekter som får lov kan bruke den.
 -->
 
@@ -1110,19 +1112,18 @@ ratio: "54%"
 
 ::left::
 
-```yaml {all|1-2|4|5|6-7|8-9}
+```yaml {all|1-2|4|5|6|7-8}
 stages:
   - test
 
 ping:
   stage: test
-  tags:
-    - ansible
+  image: <proget>/<feed>/ansible:<versjon>
   script:
     - ansible-playbook -i inventory.yml ping.yml
 ```
 
-<p class="xs muted" style="margin-top:6px">Forenklet eksempel. Tagger og filnavn i demo-repoet kan være annerledes.</p>
+<p class="xs muted" style="margin-top:6px">Forenklet eksempel. Image og filnavn i demo-repoet kan være annerledes.</p>
 
 ::right::
 
@@ -1130,15 +1131,15 @@ ping:
 <div class="s reveal"><div class="n">1</div><div><strong>stages</strong> – rekkefølgen</div></div>
 <div class="s reveal"><div class="n">2</div><div><strong>ping</strong> – navnet på jobben</div></div>
 <div class="s reveal"><div class="n">3</div><div><strong>stage</strong> – hvilken stage jobben hører til</div></div>
-<div class="s reveal"><div class="n">4</div><div><strong>tags</strong> – hvilken runner som skal ta jobben</div></div>
-<div class="s reveal"><div class="n">5</div><div><strong>script</strong> – kommandoene runneren kjører</div></div>
+<div class="s reveal"><div class="n">4</div><div><strong>image</strong> – hvilket verktøy-image jobben kjører i</div></div>
+<div class="s reveal"><div class="n">5</div><div><strong>script</strong> – kommandoene som kjøres i containeren</div></div>
 </div>
 
 <!--
 [click] stages: listen over stages, i rekkefølge.
 [click] Jobbnavnet er fritt valgt og vises i GitLab.
 [click] Hvilken stage jobben tilhører.
-[click] tags: matcher tagger på runneren. Det er slik jobben havner på Ansible-runneren og ikke på PowerShell-runneren.
+[click] image: containeren jobben kjører i. Runneren henter imaget fra ProGet. Ansible-image for Ansible, PowerShell-image for PowerShell.
 [click] script: de samme kommandoene som du ville skrevet i en terminal.
 -->
 
@@ -1147,38 +1148,39 @@ layout: default
 topic: Runner
 ---
 
-# Tagger – hvordan jobben finner riktig runner
+# <code>image:</code> – hvilket verktøy jobben får
 
 <div class="tagmatch">
-<div class="card accent reveal" style="--c:var(--sp-primary)">
-<h4>📄 Jobb: ping</h4>
-<p>tags: <span class="chip">ansible</span></p>
+<div class="runners">
+<div class="card accent reveal" style="--c:var(--ansible)"><h4>📄 Jobb: ping</h4><p>image: <span class="chip">…/ansible:&lt;versjon&gt;</span></p></div>
+<div class="card accent reveal" style="--c:var(--pwsh)"><h4>📄 Jobb: rapport</h4><p>image: <span class="chip">…/powershell:&lt;versjon&gt;</span></p></div>
 </div>
 <div class="arrows reveal">
-<div class="ok-text">✓ match</div>
-<div class="bad-text">✗ ingen match</div>
+<div>➜</div>
+<div>➜</div>
 </div>
-<div class="runners">
-<div class="card accent reveal" style="--c:var(--ansible)"><h4>⚙️ Ansible-runner</h4><p>tags: <span class="chip">ansible</span> → <strong class="ok-text">tar jobben</strong></p></div>
-<div class="card accent reveal" style="--c:var(--pwsh)"><h4>⚙️ PowerShell-runner</h4><p>tags: <span class="chip">powershell</span> → hopper over</p></div>
+<div class="card accent reveal" style="--c:var(--sp-primary)">
+<h4>⚙️ Runner-server (K3s)</h4>
+<p>Henter imaget fra <strong>ProGet</strong> og starter en <strong>container</strong> per jobb. Containeren fjernes når jobben er ferdig.</p>
 </div>
-</div>
-
-<div class="admonition warning reveal" style="margin-top:22px">
-Står jobben i <strong>pending</strong>? Da finnes det ingen ledig runner med riktig tag.
 </div>
 
-<p class="xs muted" style="margin:8px 0 0">Taggnavnene er eksempler. Se demo-repoet for de vi faktisk bruker.</p>
+<div class="admonition info reveal" style="margin-top:22px">
+Samme runner for alle jobbene – det er <code>image:</code> som bestemmer om du får Ansible eller PowerShell.
+</div>
+
+<p class="xs muted" style="margin:8px 0 0">Image-navnene er eksempler. Se demo-repoet for de vi faktisk bruker.</p>
 
 <style>
-.tagmatch { display: grid; grid-template-columns: 1fr 160px 1.3fr; gap: 14px; align-items: center; }
-.tagmatch .arrows { display: flex; flex-direction: column; gap: 52px; font-weight: 700; text-align: center; }
+.tagmatch { display: grid; grid-template-columns: 1.3fr 80px 1fr; gap: 14px; align-items: center; }
+.tagmatch .arrows { display: flex; flex-direction: column; gap: 70px; font-size: 32px; font-weight: 800; text-align: center; color: var(--sp-primary); }
 .tagmatch .runners { display: flex; flex-direction: column; gap: 14px; }
 .chip { display: inline-block; padding: 1px 9px; border-radius: 10px; background: color-mix(in srgb, var(--sp-primary) 22%, transparent); font-family: var(--slidev-code-font-family, monospace); font-size: 0.8rem; }
 </style>
 
 <!--
-Vi har én delt runner for Ansible og én for PowerShell. I dag bruker vi Ansible.
+Vi bruker ikke tags for å velge verktøy. Én runner-server tar jobbene, og image: i .gitlab-ci.yml avgjør hvilken container jobben kjører i.
+Imagene ligger i ProGet. I dag bruker vi Ansible-imaget.
 -->
 
 ---
@@ -1194,10 +1196,11 @@ sequenceDiagram
   autonumber
   actor Du
   participant GL as GitLab
-  participant R as Runner (RHEL)
+  participant R as Runner (K3s)
   participant W as Testserver (Windows)
   Du->>GL: Run pipeline på din branch
-  GL->>R: Jobben + koden fra branchen
+  R->>GL: Spør etter jobb
+  GL-->>R: Jobben + koden fra branchen
   R->>W: ansible-playbook via WinRM
   W-->>R: pong
   R-->>GL: Logg og status
@@ -1205,7 +1208,8 @@ sequenceDiagram
 ```
 
 <!--
-Følg tallene. Legg merke til at runneren henter koden fra akkurat din branch.
+Følg tallene. Legg merke til at det er runneren som spør GitLab etter jobber, og at den henter koden fra akkurat din branch.
+Runneren starter en container fra imaget i .gitlab-ci.yml, og Ansible kjører inne i containeren.
 Det er derfor branchen må være pushet til GitLab før du kan kjøre pipelinen på den.
 -->
 
@@ -1215,31 +1219,31 @@ topic: Runner
 ratio: "50%"
 ---
 
-# Hemmeligheter: CI/CD-variabler
+# Hemmeligheter: Ansible Vault
 
 ::left::
 
 <ul>
-<li class="reveal">Passord og tokens legges i <strong>Settings → CI/CD → Variables</strong></li>
-<li class="reveal">Jobben får dem som <strong>miljøvariabler</strong></li>
-<li class="reveal"><strong>Masked</strong>: verdien skjules i loggen</li>
-<li class="reveal"><strong>Protected</strong>: bare tilgjengelig på beskyttede branches</li>
+<li class="reveal">Passord og tokens <strong>krypteres</strong> med Ansible Vault før de committes</li>
+<li class="reveal">I VS Code: extensionen <strong>Ansible Vault</strong> krypterer og dekrypterer for deg</li>
+<li class="reveal">Pipelinen <strong>dekrypterer</strong> når jobben kjører – med vault-passordet</li>
+<li class="reveal">Vault-passordet selv ligger <strong>aldri</strong> i repoet</li>
 </ul>
 
 ::right::
 
 <div class="card accent reveal" style="--c:var(--sp-danger)">
-<h4 class="bad-text">🚫 Aldri i Git</h4>
+<h4 class="bad-text">🚫 Aldri i klartekst i Git</h4>
 <p>Det som er committet, ligger i historikken for alltid – også etter at du sletter det.</p>
 </div>
 
 <div class="card accent reveal" style="--c:var(--sp-success);margin-top:12px">
-<h4 class="ok-text">✓ I GitLab-variabler</h4>
-<p>Styrt tilgang, skjult i logger, og enkelt å bytte ut.</p>
+<h4 class="ok-text">✓ Kryptert med Vault</h4>
+<p>Trygt å committe, versjonert sammen med koden, og bare lesbart med vault-passordet.</p>
 </div>
 
 <!--
-Demo-repoet henter påloggingen til testserveren fra slike variabler.
+Demo-repoet har påloggingen til testserveren kryptert med Ansible Vault. Vis hvordan det ser ut i repoet og hvordan pipelinen får tak i vault-passordet.
 -->
 
 ---
@@ -1251,7 +1255,7 @@ topic: Runner
 
 <div class="columns-2-top" style="align-items:center">
 <div>
-<div class="job pending reveal"><span class="dot">⏸</span><strong>pending</strong>&nbsp;– venter på en runner</div>
+<div class="job pending reveal"><span class="dot">⏸</span><strong>pending</strong>&nbsp;– venter på runneren</div>
 <div class="job running reveal"><span class="dot">⟳</span><strong>running</strong>&nbsp;– runneren jobber</div>
 <div class="job reveal"><span class="dot">✓</span><strong>passed</strong>&nbsp;– alt gikk bra</div>
 <div class="job failed reveal"><span class="dot">✗</span><strong>failed</strong>&nbsp;– noe feilet, les loggen</div>
@@ -1280,11 +1284,11 @@ layout: center
 topic: Runner
 ---
 
-<DemoCard title="GitLab Runner" :items="['Åpne <code>.gitlab-ci.yml</code> i demo-repoet', 'Build → Pipelines → Run pipeline', 'Se jobben gå fra pending til running', 'Lese loggen', 'Settings → CI/CD → Runners', 'Settings → CI/CD → Variables']" />
+<DemoCard title="GitLab Runner" :items="['Åpne <code>.gitlab-ci.yml</code> i demo-repoet', 'Se <code>image:</code> i jobben', 'Build → Pipelines → Run pipeline', 'Se jobben gå fra pending til running', 'Lese loggen', 'Settings → CI/CD → Runners']" />
 
 <!--
-Vis hvilke runnere prosjektet har tilgang til, og at taggene stemmer med .gitlab-ci.yml.
-Vis variablene uten å vise verdiene.
+Vis hvilken runner prosjektet har tilgang til, og hvilket image jobben bruker.
+Vis i loggen at runneren henter imaget og starter containeren.
 -->
 
 ---
@@ -1305,7 +1309,8 @@ topic: ProGet
 <BigPicture focus="proget" />
 
 <!--
-ProGet er ikke et steg i pipelinen. Det er et lager som automasjonen henter fra ved behov.
+ProGet er ikke et steg i pipelinen. Det er en egen server – et lager som automasjonen henter fra ved behov.
+Runneren henter container-images (Ansible/PowerShell). Serverne henter assets, f.eks. installasjonsfiler.
 -->
 
 ---
@@ -1315,16 +1320,16 @@ topic: ProGet
 
 # Hva er ProGet?
 
-<p class="lead reveal">Et <strong>internt lager</strong> for pakker og filer, fra Inedo. Automasjonen henter fra ProGet i stedet for fra internett eller delte mapper.</p>
+<p class="lead reveal">En <strong>egen server</strong> med et internt lager for pakker og filer, fra Inedo. Automasjonen henter fra ProGet i stedet for fra internett eller delte mapper.</p>
 
 <div class="flow">
 <div class="node reveal" style="--c:var(--border)"><div class="badge" style="--c:#555">🌐</div><b>Kilder</b><span>Leverandører, internett, egne bygg</span></div>
 <div class="arrow">➜</div>
 <div class="node reveal" style="--c:var(--proget)"><div class="badge" style="--c:var(--proget)">📦</div><b>ProGet</b><span>Lagret, versjonert og tilgangsstyrt</span></div>
 <div class="arrow">➜</div>
-<div class="node reveal" style="--c:var(--sp-primary)"><div class="badge">⚙️</div><b>Runner</b><span>Henter pakker og verktøy</span></div>
+<div class="node reveal" style="--c:var(--sp-primary)"><div class="badge">⚙️</div><b>Runner</b><span>Henter container-images, og ber serverne laste ned filer</span></div>
 <div class="arrow">➜</div>
-<div class="node reveal" style="--c:var(--windows)"><div class="badge" style="--c:var(--windows)">🖥️</div><b>Servere</b><span>Henter installasjonsfiler</span></div>
+<div class="node reveal" style="--c:var(--windows)"><div class="badge" style="--c:var(--windows)">🖥️</div><b>Servere</b><span>Henter installasjonsfilene direkte fra ProGet</span></div>
 </div>
 
 <div class="columns-3-top" style="margin-top:20px">
@@ -1350,7 +1355,7 @@ topic: ProGet
 <h4>📚 Feeds</h4>
 <p style="margin-bottom:8px">Pakker av en bestemt <strong>type</strong>, med navn, versjon og metadata.</p>
 <ul class="small">
-<li>F.eks. NuGet/PowerShell, PyPI, npm, Docker</li>
+<li>F.eks. Docker (container-images), NuGet/PowerShell, PyPI, npm</li>
 <li>Hentes med pakkeverktøyet, f.eks. <code>Install-Module</code> eller <code>pip</code></li>
 <li>Kan speile offentlige kilder</li>
 </ul>
@@ -1405,15 +1410,15 @@ ratio: "62%"
 ::right::
 
 <div class="steps">
-<div class="s reveal"><div class="n">1</div><div>Ansible ber <strong>serveren</strong> laste ned filen</div></div>
-<div class="s reveal"><div class="n">2</div><div>Serveren henter den fra <strong>ProGet</strong></div></div>
+<div class="s reveal"><div class="n">1</div><div><strong>Ansible på runneren</strong> ber serveren laste ned filen</div></div>
+<div class="s reveal"><div class="n">2</div><div><strong>Serveren</strong> henter filen direkte fra <strong>ProGet</strong></div></div>
 <div class="s reveal"><div class="n">3</div><div>Ansible installerer – bare hvis den mangler</div></div>
 </div>
 
 <div class="admonition tip reveal" style="margin-top:14px">Ny versjon? Last opp til ProGet og endre URL-en i én commit.</div>
 
 <!--
-[click] win_get_url kjører på Windows-serveren. Det er serveren som laster ned fra ProGet, ikke runneren.
+[click] win_get_url kjører på Windows-serveren, ikke på runneren. Ansible sender instruksen, og serveren laster ned filen fra ProGet selv. Serveren må derfor nå ProGet over nettet.
 [click] win_package installerer. state: present betyr «sørg for at den er installert». Er den det allerede, skjer ingenting.
 -->
 
@@ -1446,7 +1451,7 @@ topic: Ansible
 <BigPicture focus="ansible" />
 
 <!--
-Ansible kjører på runneren og snakker med Windows-serveren over WinRM.
+Ansible kjører i en container på runneren og snakker med Windows-serveren over WinRM.
 -->
 
 ---
@@ -1459,7 +1464,7 @@ topic: Ansible
 <p class="lead reveal">Et verktøy for å <strong>beskrive</strong> hva som skal gjøres på servere, i lesbar YAML – og <strong>gjøre det</strong>, likt hver gang.</p>
 
 <div class="card-grid">
-<div class="card accent reveal" style="--c:var(--ansible)"><div class="badge" style="--c:var(--ansible)">🪶</div><h4>Agentløst</h4><p>Ingenting ekstra å installere – Windows nås over WinRM</p></div>
+<div class="card accent reveal" style="--c:var(--ansible)"><div class="badge" style="--c:var(--ansible)">🪶</div><h4>Agentløst</h4><p>Ingen agent å installere – Windows nås over WinRM, som er innebygd</p></div>
 <div class="card accent reveal" style="--c:var(--ansible)"><div class="badge" style="--c:var(--ansible)">📄</div><h4>YAML</h4><p>Lesbart for mennesker, kjørbart for maskiner</p></div>
 <div class="card accent reveal" style="--c:var(--ansible)"><div class="badge" style="--c:var(--ansible)">🔁</div><h4>Idempotent</h4><p>Endrer bare det som ikke allerede er riktig</p></div>
 <div class="card accent reveal" style="--c:var(--sp-primary)"><div class="badge">🧩</div><h4>Moduler</h4><p>Ferdige byggeklosser for tjenester, pakker, filer m.m.</p></div>
@@ -1484,7 +1489,7 @@ topic: Ansible
 <marker id="ah-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" style="fill:var(--sp-success)"/></marker>
 </defs>
 <rect x="10" y="10" width="820" height="450" rx="22" style="fill:color-mix(in srgb, var(--sp-primary) 10%, transparent);stroke:var(--sp-primary)" stroke-width="4"/>
-<text x="40" y="62" font-size="32" font-weight="800" style="fill:currentColor">⚙️ Runner (RHEL) – «control node»</text>
+<text x="40" y="62" font-size="32" font-weight="800" style="fill:currentColor">⚙️ Container på runneren – «control node»</text>
 <g font-size="28" style="fill:currentColor">
 <rect x="40" y="100" width="340" height="140" rx="14" style="fill:var(--surface);stroke:var(--border)" stroke-width="2"/>
 <text x="65" y="155" font-weight="700">📋 Inventory</text>
@@ -1522,7 +1527,7 @@ topic: Ansible
 </div>
 
 <!--
-Control node er maskinen Ansible kjører fra. Hos oss er det runneren.
+Control node er maskinen Ansible kjører fra. Hos oss er det containeren som runneren starter fra Ansible-imaget.
 Ansible kobler seg til hver server over WinRM, Windows sin innebygde fjernstyring, og kjører modulene der.
 -->
 
@@ -1606,7 +1611,7 @@ all:
 <div class="s reveal"><div class="n">3</div><div><strong>Hvordan</strong> vi kobler til: WinRM</div></div>
 </div>
 
-<div class="admonition warning reveal" style="margin-top:14px">Brukernavn og passord står <strong>ikke</strong> her – de kommer fra CI/CD-variabler.</div>
+<div class="admonition warning reveal" style="margin-top:14px">Brukernavn og passord står <strong>ikke</strong> i klartekst her – de ligger kryptert med Ansible Vault.</div>
 
 <!--
 [click] Grupper lar oss kjøre mot mange servere samtidig.
@@ -1760,7 +1765,7 @@ ratio: "52%"
 <div class="steps">
 <div class="s reveal"><div class="n">1</div><div><strong>Inventory</strong> peker på testserveren</div></div>
 <div class="s reveal"><div class="n">2</div><div><strong>Playbook</strong> kjører <code>win_ping</code></div></div>
-<div class="s reveal"><div class="n">3</div><div><strong>.gitlab-ci.yml</strong> kjører <code>ansible-playbook</code> på runneren</div></div>
+<div class="s reveal"><div class="n">3</div><div><strong>.gitlab-ci.yml</strong> kjører <code>ansible-playbook</code> i et Ansible-image</div></div>
 <div class="s reveal"><div class="n">4</div><div><strong>README</strong> forklarer hvordan</div></div>
 </div>
 
@@ -1823,7 +1828,7 @@ layout: center
 topic: Ansible
 ---
 
-<DemoCard title="Ansible – show and tell" :items="['Gjennomgang av demo-repoet', 'Inventory: testserveren', 'Playbook: <code>win_ping</code>', '<code>.gitlab-ci.yml</code>: tag og script', 'Kjøre pipelinen', 'Lese PLAY RECAP', 'Feil hostnavn → <code>unreachable</code>', 'Rette opp og kjøre igjen']" />
+<DemoCard title="Ansible – show and tell" :items="['Gjennomgang av demo-repoet', 'Inventory: testserveren', 'Playbook: <code>win_ping</code>', '<code>.gitlab-ci.yml</code>: image og script', 'Kjøre pipelinen', 'Lese PLAY RECAP', 'Feil hostnavn → <code>unreachable</code>', 'Rette opp og kjøre igjen']" />
 
 <!--
 Bygg opp forståelsen fil for fil før du kjører.
@@ -1977,8 +1982,9 @@ topic: Hands-on
 | --- | --- | --- |
 | Clone feiler / ber om passord | Pålogging mot GitLab | Sjekk oppsettet for HTTPS/SSH |
 | Branchen finnes ikke i «Run pipeline» | Branchen er ikke pushet | **Publish Branch** i VS Code |
-| Jobben står i **pending** | Ingen ledig runner med riktig tag | Vent litt, eller sjekk `tags` |
-| **unreachable** i loggen | Får ikke kontakt over WinRM | Sjekk servernavn og variabler |
+| Jobben står i **pending** | Runneren er opptatt eller ikke tilgjengelig | Vent litt, eller sjekk Settings → CI/CD → Runners |
+| Jobben feiler før Ansible starter | Feil `image:` eller imaget finnes ikke i ProGet | Sjekk `image:` i `.gitlab-ci.yml` |
+| **unreachable** i loggen | Får ikke kontakt over WinRM | Sjekk servernavn og vault-variabler |
 | **failed** i loggen | En task feilet | Les feilmeldingen nederst i loggen |
 
 <div class="admonition tip" style="margin-top:16px">
@@ -2000,8 +2006,8 @@ topic: Oppsummering
 <div class="card accent reveal" style="--c:var(--vscode)"><h4>💻 VS Code</h4><p>Editor, terminal og Git i ett. Godkjente extensions for Ansible og PowerShell.</p></div>
 <div class="card accent reveal" style="--c:var(--git)"><h4>🌿 Git</h4><p>Commit, branch, push og pull – i terminal eller GUI</p></div>
 <div class="card accent reveal" style="--c:var(--gitlab)"><h4>🦊 GitLab</h4><p>Felles repo, merge requests, pipelines og dokumentasjon</p></div>
-<div class="card accent reveal" style="--c:var(--sp-primary)"><h4>⚙️ Runner</h4><p>RHEL-serveren som kjører jobbene fra <code>.gitlab-ci.yml</code></p></div>
-<div class="card accent reveal" style="--c:var(--proget)"><h4>📦 ProGet</h4><p>Feeds for pakker, assets for binærfiler</p></div>
+<div class="card accent reveal" style="--c:var(--sp-primary)"><h4>⚙️ Runner</h4><p>Runner-serveren (K3s) som kjører jobbene i containere, med <code>image:</code> fra <code>.gitlab-ci.yml</code></p></div>
+<div class="card accent reveal" style="--c:var(--proget)"><h4>📦 ProGet</h4><p>Egen server: images og feeds for runneren, assets for serverne</p></div>
 <div class="card accent reveal" style="--c:var(--ansible)"><h4>🅰️ Ansible</h4><p>Inventory + playbook → <code>win_ping</code> over WinRM</p></div>
 </div>
 

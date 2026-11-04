@@ -12,7 +12,7 @@ const groups: Record<string, string[]> = {
   vscode: ['vscode', 'e-push', 'e-pull'],
   gitlab: ['gitlab', 'e-push', 'e-pull', 'e-job'],
   runner: ['gitlab', 'runner', 'e-job'],
-  proget: ['proget', 'e-asset', 'windows'],
+  proget: ['proget', 'e-asset', 'e-asset-host', 'runner', 'windows'],
   ansible: ['runner', 'ansible', 'e-winrm', 'windows'],
 }
 
@@ -21,7 +21,7 @@ const cls = (key: string) => ({ dim: !on(key), hot: props.focus !== 'all' && on(
 </script>
 
 <template>
-  <svg viewBox="0 0 1720 540" class="big-picture" :class="{ live: !isPrintMode }">
+  <svg viewBox="0 0 1720 600" class="big-picture" :class="{ live: !isPrintMode }">
     <defs>
       <marker id="bp-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
         <path d="M0 0 L10 5 L0 10z" class="ah" />
@@ -46,8 +46,12 @@ const cls = (key: string) => ({ dim: !on(key), hot: props.focus !== 'all' && on(
       <text x="1359" y="242" text-anchor="middle" class="t-edge">WinRM</text>
     </g>
     <g :class="cls('e-asset')" class="edge dashed">
-      <path d="M1565 440 L1565 354" marker-end="url(#bp-ah)" />
-      <text x="1585" y="405" class="t-edge">henter filer</text>
+      <path d="M1100 500 L1100 426" marker-end="url(#bp-ah)" />
+      <text x="1120" y="472" class="t-edge">images</text>
+    </g>
+    <g :class="cls('e-asset-host')" class="edge dashed">
+      <path d="M1304 549 L1565 549 L1565 366" marker-end="url(#bp-ah)" />
+      <text x="1430" y="535" text-anchor="middle" class="t-edge">assets</text>
     </g>
 
     <!-- VS Code -->
@@ -71,7 +75,7 @@ const cls = (key: string) => ({ dim: !on(key), hot: props.focus !== 'all' && on(
     <g :class="cls('runner')" class="node" style="--c: var(--sp-primary)">
       <rect x="900" y="110" width="400" height="310" rx="20" />
       <text x="1100" y="170" text-anchor="middle" class="t-title">GitLab Runner</text>
-      <text x="1100" y="208" text-anchor="middle" class="t-sub">RHEL-server · delt</text>
+      <text x="1100" y="208" text-anchor="middle" class="t-sub">K3s · container per jobb</text>
     </g>
     <g :class="cls('ansible')" class="node inner" style="--c: var(--ansible)">
       <rect x="940" y="250" width="320" height="130" rx="14" />
@@ -89,9 +93,9 @@ const cls = (key: string) => ({ dim: !on(key), hot: props.focus !== 'all' && on(
 
     <!-- ProGet -->
     <g :class="cls('proget')" class="node" style="--c: var(--proget)">
-      <rect x="1250" y="444" width="460" height="90" rx="18" />
-      <text x="1290" y="502" class="t-title">📦 ProGet</text>
-      <text x="1500" y="500" class="t-sub">feeds · assets</text>
+      <rect x="900" y="504" width="400" height="90" rx="18" />
+      <text x="1090" y="562" text-anchor="end" class="t-title">📦 ProGet</text>
+      <text x="1110" y="560" class="t-sub">feeds · assets</text>
     </g>
   </svg>
 </template>
