@@ -464,7 +464,7 @@ topic: Extensions
 
 # Extensions – utvid VS Code
 
-<p class="lead reveal">VS Code er lite i utgangspunktet. <strong>Extensions</strong> legger til støtte for språk, verktøy og tjenester.</p>
+<p class="lead reveal">VS Code er begrenset i utgangspunktet. <strong>Extensions</strong> legger til støtte for språk, verktøy og tjenester.</p>
 
 <div class="flow">
 <div class="node reveal"><div class="badge">🔤</div><b>Språkstøtte</b><span>Fargekoding og autofullføring for YAML, PowerShell, Ansible</span></div>
