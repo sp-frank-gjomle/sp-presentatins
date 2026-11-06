@@ -81,7 +81,7 @@ topic: Helheten
 
 <BigPicture />
 
-<p class="small muted" style="margin-top:6px">Du skriver kode i <strong>VS Code</strong> og pusher med <strong>Git</strong> til <strong>GitLab</strong> → GitLab starter en <strong>pipeline</strong> → <strong>runner-serveren</strong> kjører jobben mot serverne. <strong>ProGet</strong> (egen server) lagrer feeds og assets som automasjonen bruker.</p>
+<p class="small muted" style="margin-top:6px">Du skriver kode i <strong>VS Code</strong> og pusher med <strong>Git</strong> til <strong>GitLab</strong> → GitLab starter en <strong>pipeline</strong> → <strong>runner-serveren</strong> kjører jobben mot serverne. <strong>ProGet</strong> lagrer feeds og assets som automasjonen bruker.</p>
 
 <!--
 Dette bildet kommer igjen gjennom hele dagen – vi zoomer inn på én boks om gangen.
@@ -147,10 +147,10 @@ topic: VS Code
 
 <div class="card-grid">
 <div class="card accent reveal" style="--c:var(--vscode)"><h4>✏️ Editor</h4><p>Fargekoding, autofullføring og feilmarkering for YAML, PowerShell m.m.</p></div>
-<div class="card accent reveal" style="--c:var(--vscode)"><h4>⌨️ Terminal</h4><p>PowerShell rett i editoren – i riktig mappe</p></div>
+<div class="card accent reveal" style="--c:var(--vscode)"><h4>⌨️ Terminal</h4><p>PowerShell rett i editoren</p></div>
 <div class="card accent reveal" style="--c:var(--git)"><h4>🌿 Git innebygd</h4><p>Se endringer, commit, push og pull uten kommandoer</p></div>
 <div class="card accent reveal" style="--c:var(--sp-primary)"><h4>🧩 Extensions</h4><p>Godkjente tillegg for Ansible, PowerShell, Copilot m.m.</p></div>
-<div class="card accent reveal" style="--c:var(--sp-primary)"><h4>📝 Markdown</h4><p>Skriv dokumentasjon med forhåndsvisning</p></div>
+<div class="card accent reveal" style="--c:var(--sp-primary)"><h4>📝 Markdown</h4><p>Skriv dokumentasjon, med forhåndsvisning</p></div>
 <div class="card accent reveal" style="--c:var(--sp-primary)"><h4>🔍 Søk overalt</h4><p>Finn tekst og filer i hele repoet</p></div>
 </div>
 
@@ -236,7 +236,7 @@ topic: VS Code
 
 ::bottom::
 
-<div class="admonition info" style="margin-top:14px">
+<div class="admonition info" style="margin-top:14px;margin-bottom:16px">
 Husker du bare én: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> – skriv det du vil gjøre, f.eks. «git clone».
 </div>
 
@@ -373,7 +373,7 @@ ratio: "58%"
 
 ::left::
 
-```powershell {all|1|2|3|4-5|6|7}
+```powershell {all|1|2|3|4|5|6|7}
 git clone <url>                  # hent repoet første gang
 git switch -c feature-ping       # lag ny branch og bytt til den
 git status                       # hva er endret?
@@ -398,7 +398,8 @@ git pull                         # hent andres endringer
 [click] clone: kopierer hele repoet med historikk fra GitLab.
 [click] switch -c: lager en ny branch. (Eldre syntaks: git checkout -b.)
 [click] status: den viktigste kommandoen – vis den ofte.
-[click] add og commit: velg endringer, og lagre dem med en melding.
+[click] add: velg hvilke endringer som skal være med (staging).
+[click] commit: lagre endringene som et øyeblikksbilde med en melding.
 [click] push -u: første gang en ny branch pushes, må vi si hvor den skal (origin). Senere holder det med git push.
 [click] pull: hent det andre har pushet.
 -->
@@ -554,7 +555,7 @@ layout: center
 topic: VS Code
 ---
 
-<DemoCard title="VS Code og Git" :items="['Åpne en mappe og stol på den', 'Explorer, editor og faner', 'Command Palette: Ctrl+Shift+P', 'Terminalen: <code>git status</code>', 'Installere Ansible-extensionen', 'Source Control: endring → commit']" />
+<DemoCard title="VS Code og Git" :items="['Klone et repo', 'Explorer, editor og faner', 'Command Palette: Ctrl+Shift+P', 'Terminalen: <code>git status</code>', 'Installere Ansible-extensionen', 'Source Control: endring → commit']" />
 
 <!--
 Demo i VS Code. Bruk demo-repoet eller en tom testmappe med git init.
@@ -593,11 +594,11 @@ topic: GitLab
 
 <div class="card-grid">
 <div class="card accent reveal" style="--c:var(--gitlab)"><h4>📁 Repository</h4><p>Filene og hele historikken – i nettleseren</p></div>
-<div class="card accent reveal" style="--c:var(--gitlab)"><h4>🌿 Branches</h4><p>Se alle grener og hvem som jobber med hva</p></div>
+<div class="card accent reveal" style="--c:var(--gitlab)"><h4>🌿 Branches</h4><p>Se alle branches og hvem som jobber med hva</p></div>
 <div class="card accent reveal" style="--c:var(--gitlab)"><h4>🔀 Merge requests</h4><p>Foreslå, diskutere og godkjenne endringer</p></div>
 <div class="card accent reveal" style="--c:var(--sp-primary)"><h4>▶️ CI/CD</h4><p>Pipelines som kjører automasjonen</p></div>
 <div class="card accent reveal" style="--c:var(--sp-primary)"><h4>🔐 Tilganger</h4><p>Hvem kan se, endre og kjøre hva</p></div>
-<div class="card accent reveal" style="--c:var(--sp-primary)"><h4>📝 Dokumentasjon</h4><p>README og Markdown vises pent i nettleseren</p></div>
+<div class="card accent reveal" style="--c:var(--sp-primary)"><h4>📝 Dokumentasjon</h4><p>Skrevet i Markdown/Mermaid</p></div>
 </div>
 
 <!--
@@ -625,10 +626,9 @@ topic: GitLab
 <rect x="660" y="90" width="400" height="230" rx="22" style="fill:color-mix(in srgb, var(--gitlab) 14%, transparent);stroke:var(--gitlab)" stroke-width="4"/>
 <text x="860" y="170" font-size="36" font-weight="800">🦊 GitLab</text>
 <text x="860" y="220" font-size="24" style="opacity:.75">Felles kopi av repoet</text>
-<text x="860" y="260" font-size="24" style="opacity:.75">«origin»</text>
 <rect x="1320" y="120" width="380" height="170" rx="18" style="fill:var(--surface);stroke:var(--sp-primary)" stroke-width="3"/>
 <text x="1510" y="190" font-weight="700">⚙️ Pipeline</text>
-<text x="1510" y="235" font-size="24" style="opacity:.75">Runner · Ansible</text>
+<text x="1510" y="235" font-size="24" style="opacity:.75">Runner · (Ansible / Powershell)</text>
 </g>
 <g style="stroke:var(--sp-primary);fill:none" stroke-width="5" marker-end="url(#ah-g)" class="draw">
 <path d="M400 100 C 520 100, 540 160, 656 170"/>
@@ -888,7 +888,7 @@ topic: Dokumentasjon i Git
 
 <div class="card-grid" style="--cols:4">
 <div class="card accent reveal" style="--c:var(--git)"><div class="badge" style="--c:var(--git)">📍</div><h4>Der koden er</h4><p>Ingen leting i wikier og delte mapper</p></div>
-<div class="card accent reveal" style="--c:var(--git)"><div class="badge" style="--c:var(--git)">🕘</div><h4>Versjonert</h4><p>Historikk og endringslogg helt gratis</p></div>
+<div class="card accent reveal" style="--c:var(--git)"><div class="badge" style="--c:var(--git)">🕘</div><h4>Versjonert</h4><p>Historikk og endringslogg</p></div>
 <div class="card accent reveal" style="--c:var(--gitlab)"><div class="badge" style="--c:var(--gitlab)">👀</div><h4>Review</h4><p>Endres i samme merge request som koden</p></div>
 <div class="card accent reveal" style="--c:var(--gitlab)"><div class="badge" style="--c:var(--gitlab)">✨</div><h4>Pent i GitLab</h4><p><code>README.md</code> vises på forsiden av prosjektet</p></div>
 </div>
@@ -1214,39 +1214,6 @@ Det er derfor branchen må være pushet til GitLab før du kan kjøre pipelinen 
 -->
 
 ---
-layout: two-cols-header
-topic: Runner
-ratio: "50%"
----
-
-# Hemmeligheter: Ansible Vault
-
-::left::
-
-<ul>
-<li class="reveal">Passord og tokens <strong>krypteres</strong> med Ansible Vault før de committes</li>
-<li class="reveal">I VS Code: extensionen <strong>Ansible Vault</strong> krypterer og dekrypterer for deg</li>
-<li class="reveal">Pipelinen <strong>dekrypterer</strong> når jobben kjører – med vault-passordet</li>
-<li class="reveal">Vault-passordet selv ligger <strong>aldri</strong> i repoet</li>
-</ul>
-
-::right::
-
-<div class="card accent reveal" style="--c:var(--sp-danger)">
-<h4 class="bad-text">🚫 Aldri i klartekst i Git</h4>
-<p>Det som er committet, ligger i historikken for alltid – også etter at du sletter det.</p>
-</div>
-
-<div class="card accent reveal" style="--c:var(--sp-success);margin-top:12px">
-<h4 class="ok-text">✓ Kryptert med Vault</h4>
-<p>Trygt å committe, versjonert sammen med koden, og bare lesbart med vault-passordet.</p>
-</div>
-
-<!--
-Demo-repoet har påloggingen til testserveren kryptert med Ansible Vault. Vis hvordan det ser ut i repoet og hvordan pipelinen får tak i vault-passordet.
--->
-
----
 layout: default
 topic: Runner
 ---
@@ -1277,6 +1244,39 @@ Loggen viser nøyaktig det runneren så – samme output som i en terminal.
 
 <!--
 Feilmeldingen står nesten alltid nederst i loggen.
+-->
+
+---
+layout: two-cols-header
+topic: Runner
+ratio: "50%"
+---
+
+# Hemmeligheter: Ansible Vault
+
+::left::
+
+<ul>
+<li class="reveal">Passord og tokens <strong>krypteres</strong> med Ansible Vault før de committes</li>
+<li class="reveal">I VS Code: extensionen <strong>Ansible Vault</strong> krypterer og dekrypterer for deg</li>
+<li class="reveal">Pipelinen <strong>dekrypterer</strong> når jobben kjører – med vault-passordet</li>
+<li class="reveal">Vault-passordet selv ligger <strong>aldri</strong> i repoet</li>
+</ul>
+
+::right::
+
+<div class="card accent reveal" style="--c:var(--sp-danger)">
+<h4 class="bad-text">🚫 Aldri i klartekst i Git</h4>
+<p>Det som er committet, ligger i historikken for alltid – også etter at du sletter det.</p>
+</div>
+
+<div class="card accent reveal" style="--c:var(--sp-success);margin-top:12px">
+<h4 class="ok-text">✓ Kryptert med Vault</h4>
+<p>Trygt å committe, versjonert sammen med koden, og bare lesbart med vault-passordet.</p>
+</div>
+
+<!--
+Demo-repoet har påloggingen til testserveren kryptert med Ansible Vault. Vis hvordan det ser ut i repoet og hvordan pipelinen får tak i vault-passordet.
 -->
 
 ---
@@ -1320,7 +1320,7 @@ topic: ProGet
 
 # Hva er ProGet?
 
-<p class="lead reveal">En <strong>egen server</strong> med et internt lager for pakker og filer, fra Inedo. Automasjonen henter fra ProGet i stedet for fra internett eller delte mapper.</p>
+<p class="lead reveal">En <strong>tjeneste</strong> med et internt lager for pakker og filer. Automasjonen henter fra ProGet i stedet for fra internett eller delte mapper.</p>
 
 <div class="hub">
 <div class="node src reveal" style="--c:var(--border)"><div class="badge" style="--c:#555">🌐</div><b>Kilder</b><span>Leverandører, internett, egne bygg</span></div>
