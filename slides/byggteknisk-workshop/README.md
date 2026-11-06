@@ -4,6 +4,8 @@ Heldagsworkshop (ca. 09–15) for Byggteknisk: VS Code og Git, GitLab og dokumen
 GitLab Runner, ProGet og Ansible – med demoer og en enkel hands-on der deltakerne kloner
 demo-repoet, lager en branch og kjører en pipeline som pinger en Windows-testserver.
 
+Send [forberedelser.md](./forberedelser.md) (prerequisites) to the participants before the workshop.
+
 ## Run the presentation
 
 ```bash
